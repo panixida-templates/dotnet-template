@@ -1,0 +1,96 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net8.0</TargetFramework>
+        <RootNamespace>CodeGeneration.ServerCodeGenerator</RootNamespace>
+        <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+        <EnforceCodeStyleInBuild>false</EnforceCodeStyleInBuild>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Compile Include="Configs\JobConfig.cs" />
+        <Compile Include="Core\CodeGenerator.cs" />
+        <Compile Include="Extensions\Inflection.cs" />
+        <Compile Include="Extensions\ModelLoader.cs" />
+        <Compile Include="Enums\GeneratedFile.cs" />
+        <Compile Include="Extensions\AttributesParser.cs" />
+        <Compile Include="Extensions\ExistingFilesUpdater.cs" />
+        <Compile Include="Extensions\FileManager.cs" />
+        <Compile Include="Extensions\MigrationsRunner.cs" />
+        <Compile Include="Extensions\NamingProvider.cs" />
+        <Compile Include="Extensions\PropertiesExtractor.cs" />
+        <Compile Include="Extensions\SearchFilterGenerator.cs" />
+        <Compile Include="Extensions\TemplatesRenderer.cs" />
+        <Compile Include="Program.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.14.0" />
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.14.0" />
+
+        <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.1" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="8.0.2" />
+        <PackageReference Include="Pluralize.NET.Core" Version="1.0.0" />
+
+        <PackageReference Include="Scriban" Version="6.2.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\Common\Common.Attributes\Common.Attributes.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update="appsettings.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Templates\Api\Api.Controller.sbn">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Templates\Api\Api.Model.sbn">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Templates\Bl\Bl.DependencyInjection.sbn">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Templates\Bl\Bl.Implementation.sbn">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Templates\Bl\Bl.Interface.sbn">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Templates\Common\ConvertParams.sbn">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Templates\Common\SearchParams.sbn">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Templates\Dal\Dal.Includes.sbn">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Templates\Dal\Dal.DependencyInjection.sbn">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Templates\Dal\Dal.Implementation.sbn">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Templates\Dal\Dal.Interface.sbn">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Templates\Dal\Dal.Filters.sbn">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Templates\Dal\DefaultDbContext.sbn">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Templates\Domain\Entity.sbn">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
+</Project>

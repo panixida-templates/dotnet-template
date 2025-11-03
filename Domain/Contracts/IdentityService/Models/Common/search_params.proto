@@ -1,0 +1,6 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "Gen.IdentityService.SearchParams";
+
+message ApplicationUsersSearchParams {
+}

@@ -1,0 +1,17 @@
+﻿{{- $class_name = plural(model_name) + "SearchParams" -}}
+
+using Common.SearchParams.Core;
+using Common.Enums;
+
+namespace Common.SearchParams;
+
+public sealed class {{ $class_name }} : BaseSearchParams
+{
+{{~ if search_params != null && search_params != "" ~}}
+    {{ search_params }}
+{{~ end ~}}
+{{~ if search_params != null && search_params != "" ~}}
+
+{{~ end ~}}
+    public {{ $class_name }}() : base() { }
+}

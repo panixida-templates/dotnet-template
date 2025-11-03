@@ -1,0 +1,16 @@
+﻿{{- $class_name = "I" + plural(model_name) + "Bl" -}}
+{{- $search_params = plural(model_name) + "SearchParams" -}}
+{{- $convert_params = plural(model_name) + "ConvertParams" -}}
+
+using Bl.Interfaces.Core;
+
+using Common.ConvertParams;
+using Common.SearchParams;
+
+using Entities;
+
+namespace Bl.Interfaces;
+
+public interface {{ $class_name }} : ICrudBl<{{ model_name }}, {{ id_type }}, {{ $search_params }}, {{ $convert_params }}>
+{
+}

@@ -1,0 +1,163 @@
+﻿{{- $simpleCount = 0 -}}
+{{- for property in properties -}}
+  {{- if !property.is_navigation && !property.is_collection -}}
+    {{- $simpleCount = $simpleCount + 1 -}}
+  {{- end -}}
+{{- end -}}
+
+{{- $class_name = model_name + "Model" -}}
+{{- $entity_model = "Entities." + model_name -}}
+
+{{- $need_line_break = false -}}
+
+using System.Collections.Generic;
+using System.Linq;
+
+using Api.Infrastructure.Models.Core;
+
+using Common.Enums;
+
+namespace Api.Infrastructure.Models;
+
+public sealed record {{ $class_name }} : BaseModel<{{ id_type }}>
+{
+{{~ for property in properties ~}}
+{{~ if !property.is_navigation && !property.is_collection ~}}
+{{~ $need_line_break = true ~}}
+{{~ $isRequired = !property.is_nullable ~}}
+    public {{ $isRequired ? "required " : "" }}{{ property.type }} {{ property.name }} { get; set; }
+{{~ end ~}}
+{{~ end ~}}
+{{~ if $need_line_break ~}}
+
+{{~ $need_line_break = false ~}}
+{{~ end ~}}
+{{~ for property in properties ~}}
+{{~ if !property.is_navigation && property.is_collection ~}}
+{{~ $need_line_break = true ~}}
+    public required {{ property.type }} {{ property.name }} { get; set; } = [];
+{{~ end ~}}
+{{~ end ~}}
+{{~ if $need_line_break ~}}
+
+{{~ $need_line_break = false ~}}
+{{~ end ~}}
+{{~ for property in properties ~}}
+{{~ if property.is_navigation && !property.is_collection ~}}
+{{~ $need_line_break = true ~}}
+{{~ $isNullable = property.type | string.ends_with '?' ~}}
+{{~ $baseType = property.type | string.replace "?" "" ~}}
+{{~ $isRequired = !property.is_nullable ~}}
+    public {{ $isRequired ? "required " : "" }}{{ $baseType }}Model{{ $isNullable ? '?' : '' }} {{ property.name }} { get; set; }
+{{~ end ~}}
+{{~ end ~}}
+{{~ if $need_line_break ~}}
+
+{{~ $need_line_break = false ~}}
+{{~ end ~}}
+{{~ for property in properties ~}}
+{{~ if property.is_navigation && property.is_collection ~}}
+{{~ $need_line_break = true ~}}
+{{~ $modelType = property.type | string.replace ">" "Model>" ~}}
+    public required {{ $modelType }} {{ property.name }} { get; set; } = [];
+{{~ end ~}}
+{{~ end ~}}
+{{~ if $need_line_break ~}}
+
+{{~ $need_line_break = false ~}}
+{{~ end ~}}
+    public static {{ $class_name }} FromEntity({{ $entity_model }} obj)
+    {
+        return new {{ $class_name }}
+        {
+            Id = obj.Id{{ if properties.size > 0 }},{{ end }}
+{{~ for property in properties ~}}
+{{~ if !property.is_navigation && !property.is_collection ~}}
+            {{ property.name }} = obj.{{ property.name }}{{ if !for.last }},{{ end }}
+{{~ end ~}}
+{{~ end ~}}
+{{~ for property in properties ~}}
+{{~ $need_line_break = true ~}}
+{{~ if !property.is_navigation && property.is_collection ~}}
+{{~ if $need_line_break ~}}
+
+{{~ $need_line_break = false ~}}
+{{~ end ~}}
+            {{ property.name }} = obj.{{ property.name }}{{ if !for.last }},{{ end }}
+{{~ end ~}}
+{{~ end ~}}
+{{~ for property in properties ~}}
+{{~ $need_line_break = true ~}}
+{{~ if property.is_navigation && !property.is_collection ~}}
+{{~ if $need_line_break ~}}
+
+{{~ $need_line_break = false ~}}
+{{~ end ~}}
+            {{ property.name }} = obj.{{ property.name }} != null ? {{ property.name }}Model.FromEntity(obj.{{ property.name }}) : null,
+{{~ end ~}}
+{{~ end ~}}
+{{~ for property in properties ~}}
+{{~ $need_line_break = true ~}}
+{{~ if property.is_navigation && property.is_collection ~}}
+{{~ if $need_line_break ~}}
+
+{{~ $need_line_break = false ~}}
+{{~ end ~}}
+{{~ $elementType = property.type | string.replace "List<" "" | string.replace ">" "" ~}}
+            {{ property.name }} = {{ $elementType }}Model.FromEntitiesList(obj.{{ property.name }}),
+{{~ end ~}}
+{{~ end ~}}
+        };
+    }
+
+    public static {{ $entity_model }} ToEntity({{ $class_name }} obj)
+    {
+        return new {{ $entity_model }}(
+            id: obj.Id{{ if $simpleCount >= 1 }},{{ else }}){{ end }}
+{{~ $i = 0 ~}}
+{{~ for property in properties ~}}
+{{~ if !property.is_navigation && !property.is_collection ~}}
+{{~ $i = $i + 1 ~}}
+            {{ property.camel_name }}: obj.{{ property.name }}{{ if $i >= $simpleCount }}){{ else }},{{ end }}
+{{~ end ~}}
+{{~ end ~}}
+        {
+{{~ for property in properties ~}}
+{{~ if !property.is_navigation && property.is_collection ~}}
+            {{ property.name }} = obj.{{ property.name }},
+{{~ end ~}}
+{{~ end ~}}
+{{~ for property in properties ~}}
+{{~ $need_line_break = true ~}}
+{{~ if property.is_navigation && !property.is_collection ~}}
+{{~ if $need_line_break ~}}
+
+{{~ $need_line_break = false ~}}
+{{~ end ~}}
+            {{ property.name }} = obj.{{ property.name }} != null ? {{ property.name }}Model.ToEntity(obj.{{ property.name }}) : null,
+{{~ end ~}}
+{{~ end ~}}
+{{~ for property in properties ~}}
+{{~ $need_line_break = true ~}}
+{{~ if property.is_navigation && property.is_collection ~}}
+{{~ $elementType = property.type | string.replace "List<" "" | string.replace ">" "" ~}}
+{{~ if $need_line_break ~}}
+
+{{~ $need_line_break = false ~}}
+{{~ end ~}}
+            {{ property.name }} = {{ $elementType }}Model.ToEntitiesList(obj.{{ property.name }}),
+{{~ end ~}}
+{{~ end ~}}
+        };
+    }
+
+    public static List<{{ $class_name }}> FromEntitiesList(IEnumerable<{{ $entity_model }}> list)
+    {
+        return list.Select(FromEntity).ToList()!;
+    }
+
+    public static List<{{ $entity_model }}> ToEntitiesList(IEnumerable<{{ $class_name }}> list)
+    {
+        return list.Select(ToEntity).ToList()!;
+    }
+}

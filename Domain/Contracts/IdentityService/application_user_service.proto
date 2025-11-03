@@ -1,0 +1,45 @@
+﻿syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+import "IdentityService/Models/entities.proto";
+import "IdentityService/Models/Common/search_params.proto";
+import "IdentityService/Models/Common/convert_params.proto";
+
+option csharp_namespace = "Gen.IdentityService.ApplicationUserService";
+
+service ApplicationUserService {
+    rpc Get(GetApplicationUserRequest) returns (ApplicationUser);
+    rpc GetByFilter(GetApplicationUsersRequest) returns (GetApplicationUsersResponse);
+    rpc Create(ApplicationUser) returns (CreateApplicationUserResponse);
+    rpc AddClaim (AddClaimRequest) returns (google.protobuf.Empty);
+    rpc Update(ApplicationUser) returns (google.protobuf.Empty);
+    rpc Delete(DeleteApplicationUserRequest) returns (google.protobuf.Empty);
+}
+
+message GetApplicationUserRequest {
+    int32 id = 1;
+    optional ApplicationUsersConvertParams application_users_convert_params = 2;
+}
+
+message GetApplicationUsersRequest {
+    ApplicationUsersSearchParams application_users_search_params = 1;
+    optional ApplicationUsersConvertParams application_users_convert_params = 2;
+}
+
+message GetApplicationUsersResponse {
+    repeated ApplicationUser application_users = 1;
+}
+
+message AddClaimRequest {
+  int32 application_user_id = 1;
+  string type  = 2;
+  string value = 3;
+}
+
+message DeleteApplicationUserRequest {
+    int32 id = 1;
+}
+
+message CreateApplicationUserResponse {
+    int32 id = 1;
+}

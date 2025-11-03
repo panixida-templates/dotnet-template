@@ -1,0 +1,69 @@
+﻿{{- $class_name = plural(model_name) + "Bl" -}}
+{{- $search_params = plural(model_name) + "SearchParams" -}}
+{{- $convert_params = plural(model_name) + "ConvertParams?" -}}
+{{- $dal_interface_name = "I" + plural(model_name) + "Dal" -}}
+{{- $dal_parameter_name  = plural(model_camel_name) + "Dal" -}}
+{{- $dal_name = "_" + $dal_parameter_name -}}
+
+using Bl.Interfaces;
+
+using Common.ConvertParams;
+using Common.SearchParams;
+using Common.SearchParams.Core;
+
+using Dal.Interfaces;
+
+using Entities;
+
+namespace Bl.Implementations;
+
+public sealed class {{ $class_name }} : I{{ $class_name }}
+{
+    private readonly {{ $dal_interface_name }} {{ $dal_name }};
+
+    public {{ $class_name }}({{ $dal_interface_name }} {{ $dal_parameter_name }})
+    {
+        {{ $dal_name }} = {{ $dal_parameter_name }};
+    }
+
+    public Task<{{ model_name }}> GetAsync({{ id_type }} id, {{ $convert_params }} convertParams = null)
+    {
+        return {{ $dal_name }}.GetAsync(id, convertParams);
+    }
+
+    public Task<SearchResult<{{ model_name }}>> GetAsync({{ $search_params }} searchParams, {{ $convert_params }} convertParams = null)
+    {
+        return {{ $dal_name }}.GetAsync(searchParams, convertParams);
+    }
+
+    public Task<bool> ExistsAsync({{ id_type }} id)
+    {
+        return {{ $dal_name }}.ExistsAsync(id);
+    }
+
+    public Task<bool> ExistsAsync({{ $search_params }} searchParams)
+    {
+        return {{ $dal_name }}.ExistsAsync(searchParams);
+    }
+
+    public async Task<{{ id_type }}> AddOrUpdateAsync({{ model_name }} entity)
+    {
+        entity.Id = await {{ $dal_name }}.AddOrUpdateAsync(entity);
+        return entity.Id;
+    }
+
+    public async Task<IList<{{ id_type }}>> AddOrUpdateAsync(IList<{{ model_name }}> entities)
+    {
+        return await {{ $dal_name }}.AddOrUpdateAsync(entities);
+    }
+
+    public Task<bool> DeleteAsync({{ id_type }} id)
+    {
+        return {{ $dal_name }}.DeleteAsync(id);
+    }
+
+    public Task<bool> DeleteAsync(List<{{ id_type }}> ids)
+    {
+        return {{ $dal_name }}.DeleteAsync(db => ids.Contains(db.Id));
+    }
+}

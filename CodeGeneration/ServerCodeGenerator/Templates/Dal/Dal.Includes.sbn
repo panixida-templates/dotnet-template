@@ -1,0 +1,36 @@
+﻿{{- $class_name = plural(model_name) + "Includes" -}}
+{{- $convert_params = plural(model_name) + "ConvertParams" -}}
+
+{{- $navigationsCount = 0 -}}
+{{- for property in properties -}}
+  {{- if property.is_navigation -}}
+    {{- $navigationsCount = $navigationsCount + 1 -}}
+  {{- end -}}
+{{- end -}}
+
+using Common.ConvertParams;
+
+using Dal.DbModels;
+
+using Microsoft.EntityFrameworkCore;
+
+namespace Dal.Implementations.Includes;
+
+internal static class {{ $class_name }}
+{
+    internal static IQueryable<{{ model_name }}> Include(this IQueryable<{{ model_name }}> dbObjects, {{ $convert_params }} convertParams)
+    {
+{{~ for property in properties ~}}
+{{~ if property.is_navigation ~}}
+        if (convertParams.Include{{ property.name }})
+        {
+            dbObjects = dbObjects.Include(item => item.{{ property.name }});
+        }
+{{~ end ~}}
+{{~ end ~}}
+{{~ if $navigationsCount > 0 ~}}
+
+{{~ end ~}}
+        return dbObjects;
+    }
+}

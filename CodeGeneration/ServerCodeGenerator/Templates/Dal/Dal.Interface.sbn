@@ -1,0 +1,16 @@
+﻿{{- $class_name = "I" + plural(model_name) + "Dal" -}}
+{{- $entity_model = "Entities." + model_name -}}
+{{- $db_model = "DbModels." + model_name -}}
+{{- $search_params = plural(model_name) + "SearchParams" -}}
+{{- $convert_params = plural(model_name) + "ConvertParams" -}}
+
+using Common.ConvertParams;
+using Common.SearchParams;
+
+using Dal.Interfaces.Core;
+
+namespace Dal.Interfaces;
+
+public interface {{ $class_name }} : IBaseDal<{{ $db_model }}, {{ $entity_model }}, {{ id_type }}, {{ $search_params }}, {{ $convert_params }}>
+{
+}

@@ -1,0 +1,101 @@
+﻿{{- $simpleCount = 0 -}}
+{{- for property in properties -}}
+  {{- if !property.is_navigation && !property.is_collection -}}
+    {{- $simpleCount = $simpleCount + 1 -}}
+  {{- end -}}
+{{- end -}}
+
+{{- $class_name = plural(model_name) + "Dal" -}}
+{{- $entity_model = "Entities." + model_name -}}
+{{- $db_model = "DbModels." + model_name -}}
+{{- $search_params = plural(model_name) + "SearchParams" -}}
+{{- $convert_params = plural(model_name) + "ConvertParams" -}}
+
+{{- $need_line_break = false -}}
+
+using Common.ConvertParams;
+using Common.Enums;
+using Common.SearchParams;
+
+using Dal.Ef;
+using Dal.Implementations.Core;
+using Dal.Implementations.Filters;
+using Dal.Implementations.Includes;
+using Dal.Interfaces;
+
+using Microsoft.EntityFrameworkCore;
+
+namespace Dal.Implementations;
+
+public sealed class {{ $class_name }} : BaseDal<DefaultDbContext, {{ $db_model }}, {{ $entity_model }}, {{ id_type }}, {{ $search_params }}, {{ $convert_params }}>, I{{ $class_name }}
+{
+    protected override bool RequiresUpdatesAfterObjectSaving => false;
+
+    public {{ $class_name }}(DefaultDbContext context) : base(context)
+    {
+    }
+
+    protected override Task UpdateBeforeSavingAsync({{ $entity_model }} entity, {{ $db_model }} dbObject)
+    {
+{{~ for property in properties ~}}
+{{~ if !property.is_navigation && !property.is_collection ~}}
+        dbObject.{{ property.name }} = entity.{{ property.name }};
+{{~ end ~}}
+{{~ end ~}}
+
+        return Task.CompletedTask;
+    }
+
+    protected override async Task<IQueryable<{{ $db_model }}>> BuildDbQueryAsync(IQueryable<{{ $db_model }}> dbObjects, {{ $search_params }} searchParams)
+    {
+        dbObjects = await base.BuildDbQueryAsync(dbObjects, searchParams);
+        return dbObjects.Filter(searchParams);
+    }
+
+    protected override async Task<IList<{{ $entity_model }}>> BuildEntitiesListAsync(IQueryable<{{ $db_model }}> dbObjects, {{ $convert_params }} convertParams)
+    {
+        return (await dbObjects.Include(convertParams).ToListAsync()).Select(ConvertDbObjectToEntity).ToList();
+    }
+
+    internal static {{ $entity_model }} ConvertDbObjectToEntity({{ $db_model }} dbObject)
+    {
+        return new {{ $entity_model }}(
+            id: dbObject.Id{{ if $simpleCount >= 1 }},{{ else }}){{ end }}
+{{~ $i = 0 ~}}
+{{~ for property in properties ~}}
+{{~ if !property.is_navigation && !property.is_collection ~}}
+{{~ $i = $i + 1 ~}}
+            {{ property.camel_name }}: dbObject.{{ property.name }}{{ if $i >= $simpleCount }}){{ else }},{{ end }}
+{{~ end ~}}
+{{~ end ~}}
+        {
+{{~ for property in properties ~}}
+{{~ if !property.is_navigation && property.is_collection ~}}
+            {{ property.name }} = dbObject.{{ property.name }},
+{{~ end ~}}
+{{~ end ~}}
+{{~ for property in properties ~}}
+{{~ $need_line_break = true ~}}
+{{~ if property.is_navigation && !property.is_collection ~}}
+{{~ if $need_line_break ~}}
+
+{{~ $need_line_break = false ~}}
+{{~ end ~}}
+{{~ $baseType = property.type | string.replace "?" "" ~}}
+            {{ property.name }} = dbObject.{{ property.name }} != null ? {{ $baseType }}sDal.ConvertDbObjectToEntity(dbObject.{{ property.name }}) : null,
+{{~ end ~}}
+{{~ end ~}}
+{{~ for property in properties ~}}
+{{~ $need_line_break = true ~}}
+{{~ if property.is_navigation && property.is_collection ~}}
+{{~ if $need_line_break ~}}
+
+{{~ $need_line_break = false ~}}
+{{~ end ~}}
+{{~ $elementType = property.type | string.replace "List<" "" | string.replace ">" "" ~}}
+            {{ property.name }} = dbObject.{{ property.name }}.Select({{ $elementType }}sDal.ConvertDbObjectToEntity).ToList(),
+{{~ end ~}}
+{{~ end ~}}
+        };
+    }
+}

@@ -1,0 +1,73 @@
+﻿{{- $simpleCount = 0 -}}
+{{- for property in properties -}}
+  {{- if !property.is_navigation && !property.is_collection -}}
+    {{- $simpleCount = $simpleCount + 1 -}}
+  {{- end -}}
+{{- end -}}
+
+{{- $need_line_break = false -}}
+
+using Common.Enums;
+using Entities.Core;
+
+namespace Entities;
+
+public sealed class {{ model_name }} : BaseEntity<{{ id_type }}>
+{
+{{~ for property in properties ~}}
+{{~ if !property.is_navigation && !property.is_collection ~}}
+{{~ $need_line_break = true ~}}
+    public {{ property.type }} {{ property.name }} { get; set; }
+{{~ end ~}}
+{{~ end ~}}
+{{~ if $need_line_break ~}}
+
+{{~ $need_line_break = false ~}}
+{{~ end ~}}
+{{~ for property in properties ~}}
+{{~ if !property.is_navigation && property.is_collection ~}}
+{{~ $need_line_break = true ~}}
+    public {{ property.type }} {{ property.name }} { get; set; } = [];
+{{~ end ~}}
+{{~ end ~}}
+{{~ if $need_line_break ~}}
+
+{{~ $need_line_break = false ~}}
+{{~ end ~}}
+{{~ for property in properties ~}}
+{{~ if property.is_navigation && !property.is_collection ~}}
+{{~ $need_line_break = true ~}}
+    public {{ property.type }} {{ property.name }} { get; set; }
+{{~ end ~}}
+{{~ end ~}}
+{{~ if $need_line_break ~}}
+
+{{~ $need_line_break = false ~}}
+{{~ end ~}}
+{{~ for property in properties ~}}
+{{~ if property.is_navigation && property.is_collection ~}}
+{{~ $need_line_break = true ~}}
+    public {{ property.type }} {{ property.name }} { get; set; } = [];
+{{~ end ~}}
+{{~ end ~}}
+{{~ if $need_line_break ~}}
+
+{{~ $need_line_break = false ~}}
+{{~ end ~}}
+    public {{ model_name }}(
+        {{ id_type }} id{{ if $simpleCount >= 1 }},{{ else }}) : base(id){{ end }}
+{{~ $i = 0 ~}}
+{{ for property in properties ~}}
+{{~ if !property.is_navigation && !property.is_collection ~}}
+{{~ $i = $i + 1 ~}}
+        {{ property.type }} {{ property.camel_name }}{{ if $i >= $simpleCount }}) : base(id){{ else }},{{ end }}
+{{~ end ~}}
+{{~ end ~}}
+    {
+{{~ for property in properties ~}}
+{{~ if !property.is_navigation && !property.is_collection ~}}
+        {{ property.name }} = {{ property.camel_name }};
+{{~ end ~}}
+{{~ end ~}}
+    }
+}
