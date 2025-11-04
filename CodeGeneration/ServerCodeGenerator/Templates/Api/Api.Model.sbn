@@ -93,7 +93,8 @@ public sealed record {{ $class_name }} : BaseModel<{{ id_type }}>
 {{~ if $hasSingles || $hasNavCollections }}{{ "\n" }}{{~ end ~}}
 {{~ for property in properties ~}}
 {{~ if property.is_navigation && !property.is_collection ~}}
-            {{ property.name }} = obj.{{ property.name }} != null ? {{ property.name }}Model.FromEntity(obj.{{ property.name }}) : null,
+    {{~ $baseType = property.type | string.replace "?" "" ~}}
+            {{ property.name }} = obj.{{ property.name }} != null ? {{ $baseType }}Model.FromEntity(obj.{{ property.name }}) : null,
 {{~ end ~}}
 {{~ end ~}}
 {{~ if $hasSingles && $hasNavCollections }}{{ "\n" }}{{~ end ~}}
@@ -134,7 +135,8 @@ public sealed record {{ $class_name }} : BaseModel<{{ id_type }}>
 {{~ if $hasSingles && $hasSimpleCollections }}{{ "\n" }}{{~ end ~}}
 {{~ for property in properties ~}}
 {{~ if property.is_navigation && !property.is_collection ~}}
-            {{ property.name }} = obj.{{ property.name }} != null ? {{ property.name }}Model.ToEntity(obj.{{ property.name }}) : null,
+        {{~ $baseType = property.type | string.replace "?" "" ~}}
+            {{ property.name }} = obj.{{ property.name }} != null ? {{ $baseType }}Model.ToEntity(obj.{{ property.name }}) : null,
 {{~ end ~}}
 {{~ end ~}}
 {{~ if $hasNavCollections && ($hasSingles || $hasSimpleCollections) }}{{ "\n" }}{{~ end ~}}
