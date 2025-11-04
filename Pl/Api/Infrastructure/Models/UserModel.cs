@@ -6,11 +6,15 @@ using Api.Infrastructure.Models.Core;
 using Gen.IdentityService.Entities;
 using Gen.IdentityService.Enums;
 
+using Swashbuckle.AspNetCore.Annotations;
+
 namespace Api.Infrastructure.Models;
 
 public sealed record UserModel : BaseModel<int>
 {
     public required string Name { get; set; }
+
+    [SwaggerSchema(WriteOnly = true)]
     public required string Password { get; set; }
     public required string Email { get; set; }
     public required bool EmailConfirmed { get; set; }
