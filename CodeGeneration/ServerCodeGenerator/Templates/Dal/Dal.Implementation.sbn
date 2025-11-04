@@ -1,4 +1,4 @@
-﻿{{- $simpleCount = 0 -}}
+﻿﻿{{- $simpleCount = 0 -}}
 {{- for property in properties -}}
   {{- if !property.is_navigation && !property.is_collection -}}
     {{- $simpleCount = $simpleCount + 1 -}}
@@ -27,13 +27,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Dal.Implementations;
 
-public sealed class {{ $class_name }} : BaseDal<DefaultDbContext, {{ $db_model }}, {{ $entity_model }}, {{ id_type }}, {{ $search_params }}, {{ $convert_params }}>, I{{ $class_name }}
+public sealed class {{ $class_name }}(DefaultDbContext context) : BaseDal<DefaultDbContext, {{ $db_model }}, {{ $entity_model }}, {{ id_type }}, {{ $search_params }}, {{ $convert_params }}>(context), I{{ $class_name }}
 {
     protected override bool RequiresUpdatesAfterObjectSaving => false;
-
-    public {{ $class_name }}(DefaultDbContext context) : base(context)
-    {
-    }
 
     protected override Task UpdateBeforeSavingAsync({{ $entity_model }} entity, {{ $db_model }} dbObject)
     {
@@ -69,31 +65,29 @@ public sealed class {{ $class_name }} : BaseDal<DefaultDbContext, {{ $db_model }
 {{~ end ~}}
 {{~ end ~}}
         {
+{{~ $hasSimpleCollections = false ~}}
+{{~ $hasSingle = false ~}}
+{{~ $hasNavCollections = false ~}}
+{{~ for property in properties ~}}
+{{~ if !property.is_navigation && property.is_collection ~}}{{~ $hasSimpleCollections = true ~}}{{~ end ~}}
+{{~ if property.is_navigation && !property.is_collection ~}}{{~ $hasSingle = true ~}}{{~ end ~}}
+{{~ if property.is_navigation && property.is_collection ~}}{{~ $hasNavCollections = true ~}}{{~ end ~}}
+{{~ end ~}}
 {{~ for property in properties ~}}
 {{~ if !property.is_navigation && property.is_collection ~}}
             {{ property.name }} = dbObject.{{ property.name }},
 {{~ end ~}}
 {{~ end ~}}
+{{~ if $hasSimpleCollections && ($hasSingle || $hasNavCollections) }}{{ "\n" }}{{~ end ~}}
 {{~ for property in properties ~}}
-{{~ $need_line_break = true ~}}
 {{~ if property.is_navigation && !property.is_collection ~}}
-{{~ if $need_line_break ~}}
-
-{{~ $need_line_break = false ~}}
-{{~ end ~}}
-{{~ $baseType = property.type | string.replace "?" "" ~}}
-            {{ property.name }} = dbObject.{{ property.name }} != null ? {{ $baseType }}sDal.ConvertDbObjectToEntity(dbObject.{{ property.name }}) : null,
+            {{ property.name }} = dbObject.{{ property.name }} != null ? {{ property.type | string.replace "?" "" }}sDal.ConvertDbObjectToEntity(dbObject.{{ property.name }}) : null,
 {{~ end ~}}
 {{~ end ~}}
+{{~ if $hasSingle && $hasNavCollections }}{{ "\n" }}{{~ end ~}}
 {{~ for property in properties ~}}
-{{~ $need_line_break = true ~}}
 {{~ if property.is_navigation && property.is_collection ~}}
-{{~ if $need_line_break ~}}
-
-{{~ $need_line_break = false ~}}
-{{~ end ~}}
-{{~ $elementType = property.type | string.replace "List<" "" | string.replace ">" "" ~}}
-            {{ property.name }} = dbObject.{{ property.name }}.Select({{ $elementType }}sDal.ConvertDbObjectToEntity).ToList(),
+            {{ property.name }} = dbObject.{{ property.name }}.Select({{ property.type | string.replace "List<" "" | string.replace ">" "" }}sDal.ConvertDbObjectToEntity).ToList(),
 {{~ end ~}}
 {{~ end ~}}
         };
