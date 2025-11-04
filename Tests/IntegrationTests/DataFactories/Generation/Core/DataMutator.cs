@@ -40,9 +40,10 @@ internal static class DataMutator
             MutatePropertyValue(target, property, specimen);
         }
 
+        AlwaysMutateProperties(target, specimen, properties);
+
         return target;
     }
-
 
     private static PropertyInfo[] GetWritableInstanceProperties(Type type)
     {
@@ -105,6 +106,25 @@ internal static class DataMutator
     private static IEnumerable<PropertyInfo> PickRandomSubset(PropertyInfo[] properties, int count, Random random)
     {
         return properties.OrderBy(_ => random.Next()).Take(count);
+    }
+
+    private static void AlwaysMutateProperties(object target, SpecimenContext specimen, PropertyInfo[] properties)
+    {
+        var alwaysMutate = new[]
+        {
+            "Login",
+            "Password",
+        };
+
+        foreach (var name in alwaysMutate)
+        {
+            var property = properties.FirstOrDefault(p => string.Equals(p.Name, name, StringComparison.OrdinalIgnoreCase));
+
+            if (property is not null && property.CanWrite)
+            {
+                MutatePropertyValue(target, property, specimen);
+            }
+        }
     }
 
     private static void MutatePropertyValue(object target, PropertyInfo property, SpecimenContext specimen)
