@@ -51,7 +51,12 @@ internal sealed class StringGenerator(Faker faker) : ITypeDataGenerator
         }
         if (name.Contains("password") || name.Contains("pwd"))
         {
-            return faker.Internet.Password();
+            var password = string.Empty;
+            while (!password.Any(char.IsDigit))
+            {
+                password = faker.Internet.Password();
+            }
+            return password;
         }
         if (name.Contains("url") || name.Contains("link"))
         {
