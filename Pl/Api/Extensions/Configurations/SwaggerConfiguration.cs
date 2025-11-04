@@ -59,6 +59,8 @@ public static class SwaggerConfiguration
                 item.ApplySchemaFilter = true;
                 item.IncludeDescriptions = true;
             });
+
+            options.EnableAnnotations();
         });
 
         return services;
