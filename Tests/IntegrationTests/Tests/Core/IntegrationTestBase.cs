@@ -3,12 +3,13 @@
 using Common.Constants.ApiEndpoints.Core;
 using Common.SearchParams.Core;
 
+using DataGenerator;
+
 using Gen.IdentityService.Enums;
 
 using IntegrationTests.Clients.Interfaces;
 using IntegrationTests.Constants;
 using IntegrationTests.DataFactories;
-using IntegrationTests.DataFactories.Generation;
 using IntegrationTests.Infrastructure;
 using IntegrationTests.WebApplicationFactories;
 
@@ -34,7 +35,7 @@ public abstract partial class IntegrationTestBase<TEndpoint, TId, TModel, TSearc
 
     private readonly PostgresContainer _postgresContainer;
 
-    protected TestDataFacade TestDataFacade;
+    protected DataFacade TestDataFacade;
 
     protected IntegrationTestBase(ApiWebApplicationFactory apiWebApplicationFactory)
     {
@@ -43,7 +44,7 @@ public abstract partial class IntegrationTestBase<TEndpoint, TId, TModel, TSearc
 
         _postgresContainer = apiWebApplicationFactory.Services.GetRequiredService<PostgresContainer>();
 
-        TestDataFacade = new TestDataFacade(scope: GetType().FullName);
+        TestDataFacade = new DataFacade(scope: GetType().FullName);
     }
 
     protected Task ResetDatabaseAsync()

@@ -1,9 +1,10 @@
-﻿using Gen.IdentityService.ApplicationUserService;
+﻿using DataGenerator;
+
+using Gen.IdentityService.ApplicationUserService;
 using Gen.IdentityService.Entities;
 
 using Grpc.Core;
 
-using IntegrationTests.DataFactories.Generation;
 using IntegrationTests.Mocks.Grpc.Core;
 
 using NSubstitute;
@@ -17,7 +18,7 @@ internal static class ApplicationUserServiceClientMock
         var invoker = Substitute.For<CallInvoker>();
         var client = Substitute.For<ApplicationUserService.ApplicationUserServiceClient>(invoker);
 
-        var testDataFacade = new TestDataFacade();
+        var testDataFacade = new DataFacade();
 
         client.GetAsync(Arg.Any<GetApplicationUserRequest>())
             .Returns(callInfo =>

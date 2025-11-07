@@ -1,8 +1,0 @@
-﻿using AutoFixture.Kernel;
-
-namespace IntegrationTests.DataFactories.Generation.Generators.Interfaces;
-
-internal interface ITypeDataGenerator
-{
-    bool TryGenerate(Type type, string? name, ISpecimenContext context, out object? value);
-}
