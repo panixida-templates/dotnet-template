@@ -1,4 +1,4 @@
-﻿{{- $simpleCount = 0 -}}
+﻿﻿{{- $simpleCount = 0 -}}
 {{- for property in properties -}}
   {{- if !property.is_navigation && !property.is_collection -}}
     {{- $simpleCount = $simpleCount + 1 -}}
@@ -73,37 +73,34 @@ public sealed record {{ $class_name }} : BaseModel<{{ id_type }}>
             Id = obj.Id{{ if properties.size > 0 }},{{ end }}
 {{~ for property in properties ~}}
 {{~ if !property.is_navigation && !property.is_collection ~}}
-            {{ property.name }} = obj.{{ property.name }}{{ if !for.last }},{{ end }}
+            {{ property.name }} = obj.{{ property.name }},
 {{~ end ~}}
 {{~ end ~}}
+{{~ $hasSimpleCollections = false ~}}
+{{~ $hasSingles = false ~}}
+{{~ $hasNavCollections = false ~}}
 {{~ for property in properties ~}}
-{{~ $need_line_break = true ~}}
+{{~ if !property.is_navigation && property.is_collection ~}}{{~ $hasSimpleCollections = true ~}}{{~ end ~}}
+{{~ if property.is_navigation && !property.is_collection ~}}{{~ $hasSingles = true ~}}{{~ end ~}}
+{{~ if property.is_navigation && property.is_collection ~}}{{~ $hasNavCollections = true ~}}{{~ end ~}}
+{{~ end ~}}
+{{~ if $hasSimpleCollections }}{{ "\n" }}{{~ end ~}}
+{{~ for property in properties ~}}
 {{~ if !property.is_navigation && property.is_collection ~}}
-{{~ if $need_line_break ~}}
-
-{{~ $need_line_break = false ~}}
-{{~ end ~}}
-            {{ property.name }} = obj.{{ property.name }}{{ if !for.last }},{{ end }}
+            {{ property.name }} = obj.{{ property.name }},
 {{~ end ~}}
 {{~ end ~}}
+{{~ if $hasSingles || $hasNavCollections }}{{ "\n" }}{{~ end ~}}
 {{~ for property in properties ~}}
-{{~ $need_line_break = true ~}}
 {{~ if property.is_navigation && !property.is_collection ~}}
-{{~ if $need_line_break ~}}
-
-{{~ $need_line_break = false ~}}
-{{~ end ~}}
-            {{ property.name }} = obj.{{ property.name }} != null ? {{ property.name }}Model.FromEntity(obj.{{ property.name }}) : null,
+    {{~ $baseType = property.type | string.replace "?" "" ~}}
+            {{ property.name }} = obj.{{ property.name }} != null ? {{ $baseType }}Model.FromEntity(obj.{{ property.name }}) : null,
 {{~ end ~}}
 {{~ end ~}}
+{{~ if $hasSingles && $hasNavCollections }}{{ "\n" }}{{~ end ~}}
 {{~ for property in properties ~}}
-{{~ $need_line_break = true ~}}
 {{~ if property.is_navigation && property.is_collection ~}}
-{{~ if $need_line_break ~}}
-
-{{~ $need_line_break = false ~}}
-{{~ end ~}}
-{{~ $elementType = property.type | string.replace "List<" "" | string.replace ">" "" ~}}
+    {{~ $elementType = property.type | string.replace "List<" "" | string.replace ">" "" ~}}
             {{ property.name }} = {{ $elementType }}Model.FromEntitiesList(obj.{{ property.name }}),
 {{~ end ~}}
 {{~ end ~}}
@@ -122,29 +119,30 @@ public sealed record {{ $class_name }} : BaseModel<{{ id_type }}>
 {{~ end ~}}
 {{~ end ~}}
         {
+{{~ $hasSimpleCollections = false ~}}
+{{~ $hasSingles = false ~}}
+{{~ $hasNavCollections = false ~}}
+{{~ for property in properties ~}}
+{{~ if !property.is_navigation && property.is_collection ~}}{{~ $hasSimpleCollections = true ~}}{{~ end ~}}
+{{~ if property.is_navigation && !property.is_collection ~}}{{~ $hasSingles = true ~}}{{~ end ~}}
+{{~ if property.is_navigation && property.is_collection ~}}{{~ $hasNavCollections = true ~}}{{~ end ~}}
+{{~ end ~}}
 {{~ for property in properties ~}}
 {{~ if !property.is_navigation && property.is_collection ~}}
             {{ property.name }} = obj.{{ property.name }},
 {{~ end ~}}
 {{~ end ~}}
+{{~ if $hasSingles && $hasSimpleCollections }}{{ "\n" }}{{~ end ~}}
 {{~ for property in properties ~}}
-{{~ $need_line_break = true ~}}
 {{~ if property.is_navigation && !property.is_collection ~}}
-{{~ if $need_line_break ~}}
-
-{{~ $need_line_break = false ~}}
-{{~ end ~}}
-            {{ property.name }} = obj.{{ property.name }} != null ? {{ property.name }}Model.ToEntity(obj.{{ property.name }}) : null,
+        {{~ $baseType = property.type | string.replace "?" "" ~}}
+            {{ property.name }} = obj.{{ property.name }} != null ? {{ $baseType }}Model.ToEntity(obj.{{ property.name }}) : null,
 {{~ end ~}}
 {{~ end ~}}
+{{~ if $hasNavCollections && ($hasSingles || $hasSimpleCollections) }}{{ "\n" }}{{~ end ~}}
 {{~ for property in properties ~}}
-{{~ $need_line_break = true ~}}
 {{~ if property.is_navigation && property.is_collection ~}}
 {{~ $elementType = property.type | string.replace "List<" "" | string.replace ">" "" ~}}
-{{~ if $need_line_break ~}}
-
-{{~ $need_line_break = false ~}}
-{{~ end ~}}
             {{ property.name }} = {{ $elementType }}Model.ToEntitiesList(obj.{{ property.name }}),
 {{~ end ~}}
 {{~ end ~}}
