@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Dal.Ef.Migrations
 {
     /// <inheritdoc />
-    public partial class _20251107_142752_Add_domain_users_Table_Add_settings_Table : Migration
+    public partial class _20251107_144232_Add_domain_users_Table_Add_settings_Table : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

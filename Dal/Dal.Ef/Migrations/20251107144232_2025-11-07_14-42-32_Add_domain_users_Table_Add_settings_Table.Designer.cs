@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Dal.Ef.Migrations
 {
     [DbContext(typeof(DefaultDbContext))]
-    [Migration("20251107142752_2025-11-07_14-27-52_Add_domain_users_Table_Add_settings_Table")]
-    partial class _20251107_142752_Add_domain_users_Table_Add_settings_Table
+    [Migration("20251107144232_2025-11-07_14-42-32_Add_domain_users_Table_Add_settings_Table")]
+    partial class _20251107_144232_Add_domain_users_Table_Add_settings_Table
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
