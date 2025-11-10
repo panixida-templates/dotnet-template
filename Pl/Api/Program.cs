@@ -7,7 +7,7 @@ using Common.Constants;
 
 using Dal.DependencyInjection;
 
-using ElasticSearch.Configuration;
+using Logging.OpenSearch;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
@@ -32,7 +32,7 @@ builder.Services.AddSwagger(AppsettingsKeysConstants.ServiceName);
 if (!builder.Environment.IsEnvironment(EnvironmentConstants.Test))
 {
     builder.Services.AddPrometheusMetrics();
-    builder.Host.UseSerilog(ElasticSearchConfiguration.ConfigureElasticSearch(AppsettingsKeysConstants.ServiceName, builder.Configuration));
+    builder.Host.UseSerilog(OpenSearchConfiguration.ConfigureOpenSearch(builder.Configuration));
 }
 
 #endregion
