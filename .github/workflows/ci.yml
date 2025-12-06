@@ -4,7 +4,7 @@ on:
 
 jobs:
     build:
-        uses: PANiXiDA-Infrastructure/ci-cd/blob/main/.github/workflows/docker-build.yml@main
+        uses: PANiXiDA-Infrastructure/ci-cd/.github/workflows/docker-build.yml@main
         with:
           project-folder: .
           service-folder: Pl/Api
