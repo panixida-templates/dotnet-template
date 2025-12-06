@@ -9,6 +9,3 @@ jobs:
         with:
           service-folder: Pl/Api
           service-name: api
-        secrets:
-          registry-user: ${{ secrets.REGISTRY_USER }}
-          registry-token: ${{ secrets.REGISTRY_TOKEN }}
