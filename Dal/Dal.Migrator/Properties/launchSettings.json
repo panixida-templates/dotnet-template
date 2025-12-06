@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Dal.Migrator": {
+      "commandName": "Project"
+    },
+    "Container (Dockerfile)": {
+      "commandName": "Docker"
+    }
+  }
+}
