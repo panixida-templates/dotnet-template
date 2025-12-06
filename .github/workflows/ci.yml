@@ -7,6 +7,9 @@ on:
 jobs:
   format:
     uses: PANiXiDA-Infrastructure/ci-cd/.github/workflows/dotnet-format.yml@main
+    secrets:
+      registry-user: ${{ secrets.REGISTRY_USER }}
+      registry-token: ${{ secrets.REGISTRY_TOKEN }}    
 
   tests:
     uses: PANiXiDA-Infrastructure/ci-cd/.github/workflows/dotnet-tests.yml@main
