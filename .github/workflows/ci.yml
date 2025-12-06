@@ -1,14 +1,26 @@
 on:
     workflow_dispatch:
+    pull_request:  
     push:
         branches: [ main, development ]
 
 jobs:
+  format:
+    uses: PANiXiDA-Infrastructure/ci-cd/.github/workflows/dotnet-format.yml@main
+
+  tests:
+    uses: PANiXiDA-Infrastructure/ci-cd/.github/workflows/dotnet-tests.yml@main
+    with:
+      coverage_assembly_filters: "+DataGenerator*;-*Tests*"
+      coverage_threshold: "90"
+
   resolve-env:
+    if: ${{ github.event_name != 'pull_request' }}
     uses: PANiXiDA-Infrastructure/ci-cd/.github/workflows/resolve-environment.yml@main
 
   build:
-      needs: resolve-env
+      if: ${{ github.event_name != 'pull_request' }}
+      needs: [ format, tests, resolve-env ]
       uses: PANiXiDA-Infrastructure/ci-cd/.github/workflows/docker-build.yml@main
       with:
         environment: ${{ needs.resolve-env.outputs.environment }}
