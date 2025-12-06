@@ -15,7 +15,7 @@ jobs:
     uses: PANiXiDA-Infrastructure/ci-cd/.github/workflows/dotnet-tests.yml@main
     secrets:
       registry-user: ${{ secrets.REGISTRY_USER }}
-      registry-token: ${{ secrets.REGISTRY_TOKEN }}   
+      registry-token: ${{ secrets.REGISTRY_TOKEN }}
 
   resolve-env:
     if: ${{ github.event_name != 'pull_request' }}
