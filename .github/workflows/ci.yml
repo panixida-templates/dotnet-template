@@ -4,11 +4,16 @@ on:
         branches: [ main, development ]
 
 jobs:
-    build:
-        uses: PANiXiDA-Infrastructure/ci-cd/.github/workflows/docker-build.yml@main
-        with:
-          service-folder: Pl/Api
-          service-name: api
-        secrets:
-          registry-user: ${{ secrets.REGISTRY_USER }}
-          registry-token: ${{ secrets.REGISTRY_TOKEN }}
+  resolve-env:
+    uses: PANiXiDA-Infrastructure/ci-cd/.github/workflows/resolve-environment.yml@main
+
+  build:
+      needs: resolve-env
+      uses: PANiXiDA-Infrastructure/ci-cd/.github/workflows/docker-build.yml@main
+      with:
+        environment: ${{ needs.resolve-env.outputs.environment }}
+        service-folder: Pl/Api
+        service-name: api
+      secrets:
+        registry-user: ${{ secrets.REGISTRY_USER }}
+        registry-token: ${{ secrets.REGISTRY_TOKEN }}
