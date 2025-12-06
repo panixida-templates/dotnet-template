@@ -9,3 +9,4 @@ jobs:
         with:
           service-folder: Pl/Api
           service-name: api
+        secrets: inherit  
