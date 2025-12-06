@@ -9,7 +9,7 @@ jobs:
         with:
           project-folder: .
           service-folder: Pl/Api
-          image-tag: ${{ vars.CI_REGISTRY }}/${{ github.repository }}:${{ github.run_number }}
+          image-tag: ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:${{ github.run_number }}
         secrets:
           registry-user: ${{ secrets.REGISTRY_USER }}
           registry-token: ${{ secrets.REGISTRY_TOKEN }}
