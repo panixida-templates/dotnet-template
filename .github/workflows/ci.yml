@@ -13,3 +13,4 @@ jobs:
         secrets:
           registry-user: ${{ secrets.REGISTRY_USER }}
           registry-token: ${{ secrets.REGISTRY_TOKEN }}
+          PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
