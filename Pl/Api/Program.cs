@@ -13,8 +13,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-using Prometheus.Configuration;
-
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -31,7 +29,7 @@ builder.Services.AddSwagger(AppsettingsKeysConstants.ServiceName);
 
 if (!builder.Environment.IsEnvironment(EnvironmentConstants.Test))
 {
-    builder.Services.AddPrometheusMetrics();
+    //builder.Services.AddPrometheusMetrics();
     builder.Host.UseSerilog(OpenSearchConfiguration.ConfigureOpenSearch(builder.Configuration));
 }
 
@@ -45,7 +43,7 @@ var app = builder.Build();
 #region Middlewares
 
 app.UseMiddleware<ExceptionsMiddleware>();
-app.UseMiddleware<RequestMiddleware>();
+//app.UseMiddleware<RequestMiddleware>();
 app.UseMiddleware<LoggingMiddleWare>();
 
 #endregion
@@ -57,7 +55,7 @@ app.UseRouting();
 
 if (!builder.Environment.IsEnvironment(EnvironmentConstants.Test))
 {
-    app.UsePrometheusMetrics();
+    //app.UsePrometheusMetrics();
 }
 
 app.UseSwaggerAndSwaggerUI();
