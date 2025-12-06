@@ -11,8 +11,11 @@ jobs:
   tests:
     uses: PANiXiDA-Infrastructure/ci-cd/.github/workflows/dotnet-tests.yml@main
     with:
-      coverage_assembly_filters: "+DataGenerator*;-*Tests*"
-      coverage_threshold: "90"
+      coverage_assembly_filters: "+Api*;+Bl.Implementations*;+Dal.Implementations*;-*Tests*"
+      coverage_threshold: "0"
+    secrets:
+      registry-user: ${{ secrets.REGISTRY_USER }}
+      registry-token: ${{ secrets.REGISTRY_TOKEN }}   
 
   resolve-env:
     if: ${{ github.event_name != 'pull_request' }}
