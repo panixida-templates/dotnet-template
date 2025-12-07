@@ -44,3 +44,8 @@ jobs:
             registry-user: ${{ secrets.REGISTRY_USER }}
             registry-token: ${{ secrets.REGISTRY_TOKEN }}
             env-file: ${{ secrets.ENV_FILE }}
+            project-folder: ${{ vars.PROJECT_FOLDER }}
+            migrator-folder: ${{ vars.MIGRATOR_FOLDER }}
+            migrator-project: ${{ vars.MIGRATOR_PROJECT }}
+            nuget-config: ${{ vars.NUGET_CONFIG }}
+            nuget-provider: ${{ vars.NUGET_PROVIDER }}
