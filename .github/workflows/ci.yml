@@ -78,7 +78,7 @@ jobs:
     needs: [ deploy ]
     uses: PANiXiDA-Infrastructure/ci-cd/.github/workflows/notify-telegram.yml@main
     secrets:
-      telegram-bot-token: ${{ secrets.REGISTRY_TOKEN }}
+      telegram-bot-token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
       telegram-chat-id: ${{ vars.TELEGRAM_CHAT_ID }}
       github-token: ${{ secrets.REGISTRY_TOKEN }}
           
