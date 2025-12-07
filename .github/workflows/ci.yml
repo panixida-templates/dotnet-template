@@ -36,8 +36,11 @@ jobs:
   update-database:
       if: ${{ github.event_name != 'pull_request' }}
       needs: [ build, resolve-env ]
-      uses: PANiXiDA-Infrastructure/ci-cd/.github/workflows/dotnet-ef-migrator.yml@main
-      secrets:
-        registry-user: ${{ secrets.REGISTRY_USER }}
-        registry-token: ${{ secrets.REGISTRY_TOKEN }}
-        env-file: ${{ secrets.ENV_FILE }}
+      runs-on: ubuntu-latest
+      environment: ${{ needs.resolve-env.outputs.environment }}
+      steps:
+        - uses: PANiXiDA-Infrastructure/ci-cd/.github/actions/dotnet-ef-migrator@main
+          with:
+            registry-user: ${{ secrets.REGISTRY_USER }}
+            registry-token: ${{ secrets.REGISTRY_TOKEN }}
+            env-file: ${{ secrets.ENV_FILE }}
