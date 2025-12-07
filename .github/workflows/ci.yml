@@ -62,9 +62,9 @@ jobs:
           ssh-port: ${{ vars.SERVER_SSH_PORT }}
           ssh-private-key: ${{ secrets.SERVER_SSH_PRIVATE_KEY }}
 
-          service-folder: ${{ vars.PROJECT_FOLDER }}/${{ github.repository.name }}/${{ vars.SERVICE_NAME }}
+          service-folder: ${{ vars.PROJECT_FOLDER }}/${{ github.event.repository.name }}/${{ vars.SERVICE_NAME }}
 
-          container-name: ${{ github.repository.name }}-${{ vars.SERVICE_NAME }}-${{ vars.ENV_SUFFIX }}
+          container-name: ${{ github.event.repository.name }}-${{ vars.SERVICE_NAME }}-${{ vars.ENV_SUFFIX }}
           image: ${{ vars.REGISTRY_URL }}/${{ github.repository }}/${{ vars.SERVICE_NAME }}:${{ github.run_number }}
 
           env-file: ${{ secrets.ENV_FILE }}
