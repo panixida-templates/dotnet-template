@@ -78,6 +78,8 @@ jobs:
     if: ${{ github.event_name != 'pull_request' }}
     needs: [ deploy ]
     uses: PANiXiDA-Infrastructure/ci-cd/.github/workflows/notify-telegram.yml@main
+    with:
+      event-name: ${{ github.event_name }}    
     secrets:
       telegram-bot-token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
       telegram-chat-id: ${{ vars.TELEGRAM_CHAT_ID }}
