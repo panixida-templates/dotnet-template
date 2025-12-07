@@ -5,6 +5,7 @@ on:
     push:
         branches: [ main, development ]
 
+
 jobs:
   format:
     uses: PANiXiDA-Infrastructure/ci-cd/.github/workflows/dotnet-format.yml@main
