@@ -74,7 +74,7 @@ jobs:
           registry-token: ${{ secrets.REGISTRY_TOKEN }}
 
   notify:
-    if: ${{ github.event_name != 'pull_request' }}
+    if: ${{ always() && github.event_name != 'pull_request' }}
     needs: [ deploy ]
     uses: PANiXiDA-Infrastructure/ci-cd/.github/workflows/notify-telegram.yml@main
     with:
