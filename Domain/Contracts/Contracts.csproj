@@ -4,6 +4,22 @@
         <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+
+        <PackageId>PANiXiDA.DotnetTemplate.Contracts</PackageId>
+        <Version>1.0.0</Version>
+        <Authors>PANiXiDA</Authors>
+        <Company>PANiXiDA</Company>
+        <Description>DotnetTemplate gRPC contracts.</Description>
+
+        <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+        <RepositoryUrl>https://github.com/panixida-templates/dotnet-template</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+
+        <PublishRepositoryUrl>true</PublishRepositoryUrl>
+        <EmbedUntrackedSources>true</EmbedUntrackedSources>
     </PropertyGroup>
 
     <ItemGroup>
