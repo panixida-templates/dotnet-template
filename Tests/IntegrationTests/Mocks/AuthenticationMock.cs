@@ -1,8 +1,6 @@
 ﻿using System.Security.Claims;
 using System.Text.Encodings.Web;
 
-using IdentityModel;
-
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -36,14 +34,11 @@ internal sealed class AuthenticationMock(
         {
             new(ClaimTypes.NameIdentifier, applicationUserId),
             new(CustomJwtClaimTypes.UserId, userId),
-            new(JwtClaimTypes.Subject, applicationUserId),
-            new(JwtClaimTypes.Name, userName)
         };
 
         foreach (var role in roles)
         {
             claims.Add(new Claim(ClaimTypes.Role, role));
-            claims.Add(new Claim(JwtClaimTypes.Role, role));
         }
 
         claims.Add(new Claim(ClaimTypes.Name, userName));

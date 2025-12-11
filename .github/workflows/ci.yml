@@ -95,7 +95,6 @@ jobs:
     uses: PANiXiDA-Infrastructure/ci-cd/.github/workflows/dotnet-publish-github-nuget.yml@main
     with:
       project_folder: ${{ vars.NUGET_PROJECT }}
-      dotnet_version: "8.0.x"
     secrets:
       GH_PACKAGES_TOKEN: ${{ secrets.REGISTRY_TOKEN }}
       
