@@ -1,13 +1,11 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.OpenApi;
+
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.OpenApi.Models;
-
-using Unchase.Swashbuckle.AspNetCore.Extensions.Extensions;
 
 namespace Api.Extensions.Configurations;
 
@@ -17,28 +15,29 @@ public static class SwaggerConfiguration
     {
         services.AddSwaggerGen(options =>
         {
+            var appVersion = Environment.GetEnvironmentVariable("APP_VERSION") ?? "1.0";
+
             options.SwaggerDoc("v1", new OpenApiInfo
             {
-                Version = Environment.GetEnvironmentVariable("APP_VERSION") ?? "1.0",
+                Version = appVersion,
                 Title = "Api",
-                Description = $"{serviceName}. Версия: {Environment.GetEnvironmentVariable("APP_VERSION") ?? "1.0"}",
+                Description = $"{serviceName}. Версия: {appVersion}",
             });
 
-            options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+            options.AddSecurityDefinition("bearer", new OpenApiSecurityScheme
             {
-                Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+                Description = "JWT Authorization header using the Bearer scheme. Example: \"Bearer {token}\"",
                 Name = "Authorization",
                 In = ParameterLocation.Header,
-                Type = SecuritySchemeType.ApiKey,
-                Scheme = "Bearer",
+                Type = SecuritySchemeType.Http,
+                Scheme = "bearer",
+                BearerFormat = "JWT"
             });
-            options.AddSecurityRequirement(new OpenApiSecurityRequirement
+
+            options.AddSecurityRequirement(document => new OpenApiSecurityRequirement
             {
                 {
-                    new OpenApiSecurityScheme
-                    {
-                        Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" }
-                    },
+                    new OpenApiSecuritySchemeReference("bearer", document),
                     new List<string>()
                 }
             });
@@ -52,13 +51,8 @@ public static class SwaggerConfiguration
                 using var streamWriter = new StreamWriter(fileStream);
                 streamWriter.Write("<?xml version=\"1.0\" encoding=\"utf-8\"?><doc></doc>");
             }
-            options.IncludeXmlComments(xmlPath);
 
-            options.AddEnumsWithValuesFixFilters(item =>
-            {
-                item.ApplySchemaFilter = true;
-                item.IncludeDescriptions = true;
-            });
+            options.IncludeXmlComments(xmlPath);
 
             options.EnableAnnotations();
         });
