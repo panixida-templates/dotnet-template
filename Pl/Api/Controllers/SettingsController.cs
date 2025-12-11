@@ -13,16 +13,12 @@ using Common.ConvertParams;
 using Common.SearchParams;
 using Common.SearchParams.Core;
 
-using Gen.IdentityService.Enums;
-
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers;
 
 [Route(SettingsApiEndpointsConstants.BaseConstant)]
-[Authorize(Roles = $"{nameof(ApplicationUserRole.Developer)},{nameof(ApplicationUserRole.Admin)}")]
 public sealed class SettingsController : BaseApiController
 {
     private readonly ISettingsBl _settingsBl;

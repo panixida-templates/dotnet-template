@@ -15,6 +15,8 @@ using Microsoft.Extensions.Hosting;
 
 using Serilog;
 
+using System.Text.Json.Serialization;
+
 var builder = WebApplication.CreateBuilder(args);
 
 #region Custom Extensions
@@ -35,7 +37,12 @@ if (!builder.Environment.IsEnvironment(EnvironmentConstants.Test))
 
 #endregion
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(jsonOptions =>
+    {
+        jsonOptions.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+    });
+
 builder.Services.AddEndpointsApiExplorer();
 
 var app = builder.Build();
