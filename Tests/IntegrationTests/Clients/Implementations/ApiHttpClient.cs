@@ -1,19 +1,16 @@
-﻿using System.Globalization;
+﻿using Api.Infrastructure.Responses.Core;
+using Common.Constants;
+using Common.SearchParams.Core;
+using FluentAssertions;
+using IntegrationTests.Clients.Interfaces;
+using System.Globalization;
 using System.Net;
 using System.Net.Mime;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Web;
-
-using Api.Infrastructure.Responses.Core;
-
-using Common.Constants;
-using Common.SearchParams.Core;
-
-using FluentAssertions;
-
-using IntegrationTests.Clients.Interfaces;
 
 namespace IntegrationTests.Clients.Implementations;
 
@@ -25,7 +22,7 @@ public sealed class ApiHttpClient : IApiHttpClient
     {
         PropertyNameCaseInsensitive = true,
         Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
-        WriteIndented = false
+        WriteIndented = false,
     };
 
     private static readonly HashSet<HttpMethod> MethodsWithBody =
@@ -38,6 +35,7 @@ public sealed class ApiHttpClient : IApiHttpClient
     public ApiHttpClient(IHttpClientFactory httpClientFactory)
     {
         _httpClientFactory = httpClientFactory;
+        JsonOptions.Converters.Add(new JsonStringEnumConverter());
     }
 
     public Task<RestApiResponse<TResponse>?> GetAsync<TResponse>(

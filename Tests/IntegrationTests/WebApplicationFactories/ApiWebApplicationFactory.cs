@@ -1,6 +1,4 @@
-﻿using Api;
-
-using Common.Constants;
+﻿using Common.Constants;
 
 using IntegrationTests.Clients.DependencyInjection;
 using IntegrationTests.Infrastructure;
