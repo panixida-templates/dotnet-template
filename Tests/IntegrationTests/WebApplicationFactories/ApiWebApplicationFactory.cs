@@ -3,7 +3,6 @@
 using IntegrationTests.Clients.DependencyInjection;
 using IntegrationTests.Infrastructure;
 using IntegrationTests.Mocks;
-using IntegrationTests.Mocks.Grpc.Configurations;
 
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
@@ -80,8 +79,6 @@ public sealed class ApiWebApplicationFactory : WebApplicationFactory<Program>, I
 
             services.UseHttpClients(configuration);
             services.AddHttpClient(ClientsConstants.ApiClient).ConfigurePrimaryHttpMessageHandler(_ => Server.CreateHandler());
-
-            services.AddGrpcMockss();
         });
     }
 }

@@ -1,8 +1,8 @@
-﻿using Api.Infrastructure.Responses.Core;
-using Common.Constants;
+﻿using Common.Constants;
 using Common.SearchParams.Core;
 using FluentAssertions;
 using IntegrationTests.Clients.Interfaces;
+using Pl.Api.Http.Dtos.Core;
 using System.Globalization;
 using System.Net;
 using System.Net.Mime;

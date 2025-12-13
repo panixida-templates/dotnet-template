@@ -20,17 +20,17 @@ public sealed class SettingsBl : ISettingsBl
         _settingsDal = settingsDal;
     }
 
-    public Task<Settings> GetAsync(int id, SettingsConvertParams? convertParams = null)
+    public Task<Setting> GetAsync(int id, SettingsConvertParams? convertParams = null)
     {
         return _settingsDal.GetAsync(id, convertParams);
     }
 
-    public Task<SearchResult<Settings>> GetAsync(SettingsSearchParams searchParams, SettingsConvertParams? convertParams = null)
+    public Task<SearchResult<Setting>> GetAsync(SettingsSearchParams searchParams, SettingsConvertParams? convertParams = null)
     {
         return _settingsDal.GetAsync(searchParams, convertParams);
     }
 
-    public Task<Settings?> GetAsync(SettingType settingType)
+    public Task<Setting?> GetAsync(SettingType settingType)
     {
         return _settingsDal.GetAsync(settingType);
     }
@@ -45,13 +45,13 @@ public sealed class SettingsBl : ISettingsBl
         return _settingsDal.ExistsAsync(searchParams);
     }
 
-    public async Task<int> AddOrUpdateAsync(Settings entity)
+    public async Task<int> AddOrUpdateAsync(Setting entity)
     {
         entity.Id = await _settingsDal.AddOrUpdateAsync(entity);
         return entity.Id;
     }
 
-    public async Task<IList<int>> AddOrUpdateAsync(IList<Settings> entities)
+    public async Task<IList<int>> AddOrUpdateAsync(IList<Setting> entities)
     {
         return await _settingsDal.AddOrUpdateAsync(entities);
     }

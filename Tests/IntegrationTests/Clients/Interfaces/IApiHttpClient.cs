@@ -1,8 +1,7 @@
 ﻿using System.Net;
 
-using Api.Infrastructure.Responses.Core;
-
 using Common.SearchParams.Core;
+using Pl.Api.Http.Dtos.Core;
 
 namespace IntegrationTests.Clients.Interfaces;
 

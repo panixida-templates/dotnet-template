@@ -5,8 +5,6 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-using static Common.Constants.IdentityServiceConstants;
-
 namespace IntegrationTests.Mocks;
 
 internal sealed class AuthenticationMock(
@@ -33,7 +31,6 @@ internal sealed class AuthenticationMock(
         var claims = new List<Claim>
         {
             new(ClaimTypes.NameIdentifier, applicationUserId),
-            new(CustomJwtClaimTypes.UserId, userId),
         };
 
         foreach (var role in roles)

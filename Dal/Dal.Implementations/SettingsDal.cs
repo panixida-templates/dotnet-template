@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Dal.Implementations;
 
-public sealed class SettingsDal : BaseDal<DefaultDbContext, DbModels.Settings, Entities.Settings, int, SettingsSearchParams, SettingsConvertParams>, ISettingsDal
+public sealed class SettingsDal : BaseDal<DefaultDbContext, DbModels.Settings, Entities.Setting, int, SettingsSearchParams, SettingsConvertParams>, ISettingsDal
 {
     protected override bool RequiresUpdatesAfterObjectSaving => false;
 
@@ -20,7 +20,7 @@ public sealed class SettingsDal : BaseDal<DefaultDbContext, DbModels.Settings, E
     {
     }
 
-    protected override Task UpdateBeforeSavingAsync(Entities.Settings entity, DbModels.Settings dbObject)
+    protected override Task UpdateBeforeSavingAsync(Entities.Setting entity, DbModels.Settings dbObject)
     {
         dbObject.SettingType = entity.SettingType;
         dbObject.Value = entity.Value;
@@ -34,20 +34,20 @@ public sealed class SettingsDal : BaseDal<DefaultDbContext, DbModels.Settings, E
         return dbObjects.Filter(searchParams);
     }
 
-    protected override async Task<IList<Entities.Settings>> BuildEntitiesListAsync(IQueryable<DbModels.Settings> dbObjects, SettingsConvertParams convertParams)
+    protected override async Task<IList<Entities.Setting>> BuildEntitiesListAsync(IQueryable<DbModels.Settings> dbObjects, SettingsConvertParams convertParams)
     {
         return (await dbObjects.Include(convertParams).ToListAsync()).Select(ConvertDbObjectToEntity).ToList();
     }
 
-    internal static Entities.Settings ConvertDbObjectToEntity(DbModels.Settings dbObject)
+    internal static Entities.Setting ConvertDbObjectToEntity(DbModels.Settings dbObject)
     {
-        return new Entities.Settings(
+        return new Entities.Setting(
             id: dbObject.Id,
             settingType: dbObject.SettingType,
             value: dbObject.Value);
     }
 
-    public async Task<Entities.Settings?> GetAsync(SettingType settingType)
+    public async Task<Entities.Setting?> GetAsync(SettingType settingType)
     {
         return (await GetAsync(item => item.SettingType == settingType)).FirstOrDefault();
     }

@@ -15,12 +15,6 @@ public static class AppsettingsKeysConstants
 
     #endregion
 
-    #region gRPC clients
-
-    public const string IdentityServiceBaseAddress = "GrpcClients:IdentityService:BaseAddress";
-
-    #endregion
-
     public const string IndentityAuthority = "IndentityAuthority";
     public const string ServiceName = "ServiceName";
 }

@@ -1,12 +1,11 @@
 ﻿using System.Net;
 
-using Api.Infrastructure.Core;
-
 using AutoFixture;
 
 using Common.SearchParams.Core;
 
 using FluentAssertions;
+using Pl.Api.Http.Dtos.Core;
 
 namespace IntegrationTests.Tests.Core;
 
