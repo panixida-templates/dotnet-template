@@ -1,0 +1,48 @@
+﻿<MudStack Row="true" Spacing="2" AlignItems="AlignItems.Center" Class="mb-4">
+
+    <MudTextField T="string"
+                  Value="@Search"
+                  ValueChanged="OnSearchChanged"
+                  Label="Поиск (ФИО / Email)"
+                  Variant="Variant.Outlined"
+                  Immediate="true"
+                  DebounceInterval="300"
+                  Adornment="Adornment.Start"
+                  AdornmentIcon="@Icons.Material.Filled.Search"
+                  OnDebounceIntervalElapsed="OnSearchDebounced" />
+
+    <MudSelect T="string"
+               Value="@Role"
+               ValueChanged="OnRoleChanged"
+               Label="Роль"
+               Variant="Variant.Outlined"
+               Clearable="true"
+               Dense="true"
+               Style="min-width:200px">
+        @foreach (var role in Roles)
+        {
+            <MudSelectItem Value="@role">@role</MudSelectItem>
+        }
+    </MudSelect>
+
+    <MudSelect T="bool?"
+               Value="@IsActive"
+               ValueChanged="OnIsActiveChanged"
+               Label="Статус"
+               Variant="Variant.Outlined"
+               Clearable="true"
+               Dense="true"
+               Style="min-width:200px">
+        <MudSelectItem Value="@((bool?)true)">Активные</MudSelectItem>
+        <MudSelectItem Value="@((bool?)false)">Неактивные</MudSelectItem>
+    </MudSelect>
+
+    <MudSpacer />
+
+    <MudButton Variant="Variant.Outlined"
+               StartIcon="@Icons.Material.Filled.Clear"
+               OnClick="OnResetClicked">
+        Сбросить
+    </MudButton>
+
+</MudStack>

@@ -1,0 +1,43 @@
+﻿@page "/users"
+
+<MudText Typo="Typo.h5" Class="mb-2">Пользователи</MudText>
+
+<MudPaper Class="pa-4" Elevation="1">
+    <UsersFilters @bind-Search="_search" @bind-Role="_role" @bind-IsActive="_isActive" Roles="_roles" OnChanged="OnFiltersChanged" OnReset="ResetFilters" />
+
+    <MudTable T="UserRow" @ref="_table" ServerData="LoadServerData" Dense="true" Hover="true" Bordered="true" Striped="true" Loading="_loading">
+        <HeaderContent>
+            <MudTh><MudTableSortLabel T="UserRow" SortLabel="name">ФИО</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel T="UserRow" SortLabel="email">Email</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel T="UserRow" SortLabel="role">Роль</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel T="UserRow" SortLabel="created">Создан</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel T="UserRow" SortLabel="active">Активен</MudTableSortLabel></MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="ФИО">@context.FullName</MudTd>
+            <MudTd DataLabel="Email">@context.Email</MudTd>
+            <MudTd DataLabel="Роль">
+                <MudChip T="string" Size="Size.Small" Variant="Variant.Outlined">
+                    @context.Role
+                </MudChip>
+            </MudTd>
+            <MudTd DataLabel="Создан">@context.CreatedAt:yyyy-MM-dd</MudTd>
+            <MudTd DataLabel="Активен">
+                @if (context.IsActive)
+                {
+                    <MudChip T="string" Color="Color.Success" Size="Size.Small">Да</MudChip>
+                }
+                else
+                {
+                    <MudChip T="string" Color="Color.Default" Size="Size.Small">Нет</MudChip>
+                }
+            </MudTd>
+        </RowTemplate>
+        <PagerContent>
+            <MudTablePager PageSizeOptions="new[] { 10, 20, 50 }" />
+        </PagerContent>
+        <NoRecordsContent>
+            <MudText Color="Color.Secondary">Ничего не найдено</MudText>
+        </NoRecordsContent>
+    </MudTable>
+</MudPaper>

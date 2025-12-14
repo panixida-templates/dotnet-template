@@ -1,6 +1,7 @@
-﻿using Common.Constants;
+﻿using Common.Clients.DependencyInjection;
 
-using IntegrationTests.Clients.DependencyInjection;
+using Common.Constants;
+
 using IntegrationTests.Infrastructure;
 using IntegrationTests.Mocks;
 

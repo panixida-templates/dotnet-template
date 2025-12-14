@@ -1,13 +1,12 @@
-﻿using System.Net;
+﻿using Common.SearchParams.Core;
 
-using Common.SearchParams.Core;
-using Pl.Api.Http.Dtos.Core;
+using System.Net;
 
-namespace IntegrationTests.Clients.Interfaces;
+namespace Common.Clients.Interfaces;
 
 public interface IApiHttpClient
 {
-    Task<RestApiResponse<TResponse>?> GetAsync<TResponse>(
+    Task<TResponse> GetAsync<TResponse>(
         string endpoint,
         BaseSearchParams? searchParams = null,
         object? convertParams = null,
@@ -15,21 +14,21 @@ public interface IApiHttpClient
         HttpStatusCode expectedStatus = HttpStatusCode.OK,
         CancellationToken cancellationToken = default);
 
-    Task<RestApiResponse<TResponse>?> PostAsync<TRequest, TResponse>(
+    Task<TResponse> PostAsync<TRequest, TResponse>(
         string endpoint,
         TRequest request,
         IDictionary<string, string?>? headers = null,
         HttpStatusCode expectedStatus = HttpStatusCode.Created,
         CancellationToken cancellationToken = default);
 
-    Task<RestApiResponse<TResponse>?> PutAsync<TRequest, TResponse>(
+    Task<TResponse> PutAsync<TRequest, TResponse>(
         string endpoint,
         TRequest request,
         IDictionary<string, string?>? headers = null,
         HttpStatusCode expectedStatus = HttpStatusCode.OK,
         CancellationToken cancellationToken = default);
 
-    Task<RestApiResponse<TResponse>?> DeleteAsync<TResponse>(
+    Task<TResponse> DeleteAsync<TResponse>(
         string endpoint,
         IDictionary<string, string?>? headers = null,
         HttpStatusCode expectedStatus = HttpStatusCode.NoContent,

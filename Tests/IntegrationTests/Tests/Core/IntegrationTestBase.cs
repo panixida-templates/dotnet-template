@@ -1,9 +1,9 @@
-﻿using Common.Constants.ApiEndpoints.Core;
+﻿using Common.Clients.Interfaces;
+using Common.Constants.ApiEndpoints.Core;
 using Common.SearchParams.Core;
 
 using DataGenerator;
 
-using IntegrationTests.Clients.Interfaces;
 using IntegrationTests.Constants;
 using IntegrationTests.DataFactories;
 using IntegrationTests.Infrastructure;

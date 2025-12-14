@@ -1,15 +1,14 @@
-﻿using System.Net.Http.Headers;
-using System.Net.Mime;
-
+﻿using Common.Clients.Implementations;
+using Common.Clients.Interfaces;
 using Common.Constants;
-
-using IntegrationTests.Clients.Implementations;
-using IntegrationTests.Clients.Interfaces;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace IntegrationTests.Clients.DependencyInjection;
+using System.Net.Http.Headers;
+using System.Net.Mime;
+
+namespace Common.Clients.DependencyInjection;
 
 public static class DependencyInjection
 {
@@ -24,7 +23,7 @@ public static class DependencyInjection
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(MediaTypeNames.Application.Json));
         });
 
-        services.AddSingleton<IApiHttpClient, ApiHttpClient>();
+        services.AddScoped<IApiHttpClient, ApiHttpClient>();
 
         return services;
     }

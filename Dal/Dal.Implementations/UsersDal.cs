@@ -21,7 +21,12 @@ public sealed class UsersDal : BaseDal<DefaultDbContext, DbModels.User, Entities
 
     protected override Task UpdateBeforeSavingAsync(Entities.User entity, DbModels.User dbObject)
     {
-        dbObject.ApplicationUserId = entity.ApplicationUserId;
+        dbObject.Role = entity.Role;
+        dbObject.Name = entity.Name;
+        dbObject.Email = entity.Email;
+        dbObject.Phone = entity.Phone;
+        dbObject.Age = entity.Age;
+        dbObject.Birthday = entity.Birthday;
 
         return Task.CompletedTask;
     }
@@ -41,7 +46,12 @@ public sealed class UsersDal : BaseDal<DefaultDbContext, DbModels.User, Entities
     {
         return new Entities.User(
             id: dbObject.Id,
-            applicationUserId: dbObject.ApplicationUserId)
+            role: dbObject.Role,
+            name: dbObject.Name,
+            email: dbObject.Email,
+            phone: dbObject.Phone,
+            age: dbObject.Age,
+            birthday: dbObject.Birthday)
         {
         };
     }

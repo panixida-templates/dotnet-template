@@ -10,7 +10,12 @@ public static class UsersMapper
     {
         var entity = new User(
             id: dto.Id,
-            applicationUserId: dto.Id
+            role: dto.Role,
+            name: dto.Name,
+            email: dto.Email,
+            phone: dto.Phone,
+            age: dto.Age,
+            birthday: dto.Birthday
         );
 
         return entity;
@@ -26,7 +31,12 @@ public static class UsersMapper
         var dto = new UserDto
         {
             Id = entity.Id,
-            Name = string.Empty
+            Role = entity.Role,
+            Name = entity.Name,
+            Email = entity.Email,
+            Phone = entity.Phone,
+            Age = entity.Age,
+            Birthday = entity.Birthday
         };
 
         return dto;

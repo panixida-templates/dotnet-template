@@ -1,10 +1,10 @@
 ﻿using Common.Enums;
 
-using Pl.Api.Http.Dtos.Models.Core;
+using Pl.Ui.Blazor.ViewModels.Core;
 
-namespace Pl.Api.Http.Dtos.Models;
+namespace Pl.Ui.Blazor.ViewModels;
 
-public sealed record UserDto : BaseDto<int>
+public sealed record UserViewModel : BaseViewModel<int>
 {
     public required Role Role { get; set; }
     public required string Name { get; set; }

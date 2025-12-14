@@ -14,7 +14,7 @@ public abstract partial class IntegrationTestBase<TEndpoint, TId, TModel, TSearc
     protected async Task<TModel> GetAsync(TId id, TConvertParams? convertParams = null, IDictionary<string, string?>? headers = null)
     {
         var endpoint = TEndpoint.ById(id);
-        var response = await ApiHttpClient.GetAsync<TModel>(endpoint: endpoint, convertParams: convertParams, headers: headers ?? DefaultHeaders);
+        var response = await ApiHttpClient.GetAsync<RestApiResponse<TModel>>(endpoint: endpoint, convertParams: convertParams, headers: headers ?? DefaultHeaders);
 
         response.Should().NotBeNull($"{HttpMethod.Get} {endpoint} вернул null");
         response.IsSuccess.Should().BeTrue($"{HttpMethod.Get} {endpoint} должен завершиться успешно");
@@ -27,7 +27,7 @@ public abstract partial class IntegrationTestBase<TEndpoint, TId, TModel, TSearc
     protected async Task GetNotFoundAsync(TId id, IDictionary<string, string?>? headers = null)
     {
         var endpoint = TEndpoint.ById(id);
-        var response = await ApiHttpClient.GetAsync<TModel>(endpoint: endpoint, headers: headers ?? DefaultHeaders, expectedStatus: HttpStatusCode.NotFound);
+        var response = await ApiHttpClient.GetAsync<RestApiResponse<TModel>>(endpoint: endpoint, headers: headers ?? DefaultHeaders, expectedStatus: HttpStatusCode.NotFound);
 
         (response == null || !response.IsSuccess).Should().BeTrue($"{HttpMethod.Get} {endpoint} должен вернуть 404, если объект не найден");
     }
@@ -36,7 +36,7 @@ public abstract partial class IntegrationTestBase<TEndpoint, TId, TModel, TSearc
     {
         searchParams ??= TestDataFacade.Build<TSearchParams>().Without(item => item.SortField).Create();
         var endpoint = TEndpoint.GetByFilter();
-        var response = await ApiHttpClient.GetAsync<SearchResult<TModel>>(endpoint: endpoint, searchParams: searchParams, convertParams: convertParams, headers: headers ?? DefaultHeaders);
+        var response = await ApiHttpClient.GetAsync<RestApiResponse<SearchResult<TModel>>>(endpoint: endpoint, searchParams: searchParams, convertParams: convertParams, headers: headers ?? DefaultHeaders);
 
         response.Should().NotBeNull($"{HttpMethod.Get} {endpoint} вернул null");
         response.IsSuccess.Should().BeTrue($"{HttpMethod.Get} {endpoint} должен завершиться успешно");
@@ -53,7 +53,7 @@ public abstract partial class IntegrationTestBase<TEndpoint, TId, TModel, TSearc
     {
         request ??= TestDataFacade.Create<TModel>();
         var endpoint = TEndpoint.Base();
-        var response = await ApiHttpClient.PostAsync<TModel, TId>(endpoint: endpoint, request: request, headers: headers ?? DefaultHeaders);
+        var response = await ApiHttpClient.PostAsync<TModel, RestApiResponse<TId>>(endpoint: endpoint, request: request, headers: headers ?? DefaultHeaders);
 
         response.Should().NotBeNull($"{HttpMethod.Post} {endpoint} вернул null");
         response.IsSuccess.Should().BeTrue($"{HttpMethod.Post} {endpoint} должен завершиться успешно");
@@ -67,7 +67,7 @@ public abstract partial class IntegrationTestBase<TEndpoint, TId, TModel, TSearc
     {
         request = TestDataFacade.Mutate(request);
         var endpoint = TEndpoint.ById(id);
-        var response = await ApiHttpClient.PutAsync<TModel, NoContent>(endpoint: endpoint, request: request, headers: headers ?? DefaultHeaders);
+        var response = await ApiHttpClient.PutAsync<TModel, RestApiResponse<NoContent>>(endpoint: endpoint, request: request, headers: headers ?? DefaultHeaders);
 
         response.Should().NotBeNull($"{HttpMethod.Put} {endpoint} вернул null");
         response.IsSuccess.Should().BeTrue($"{HttpMethod.Put} {endpoint} должен завершиться успешно");
