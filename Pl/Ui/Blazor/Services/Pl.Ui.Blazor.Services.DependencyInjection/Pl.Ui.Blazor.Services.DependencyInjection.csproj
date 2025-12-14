@@ -8,12 +8,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <FrameworkReference Include="Microsoft.AspNetCore.App" PrivateAssets="all" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.1" PrivateAssets="all" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Pl.Api.Http.Controllers\Pl.Api.Http.Controllers.csproj" />
-        <ProjectReference Include="..\Pl.Api.Http.Middlewares\Pl.Api.Http.Middlewares.csproj" />
+        <ProjectReference Include="..\Pl.Ui.Blazor.Services.Implementations\Pl.Ui.Blazor.Services.Implementations.csproj" />
+        <ProjectReference Include="..\Pl.Ui.Blazor.Services.Interfaces\Pl.Ui.Blazor.Services.Interfaces.csproj" />
     </ItemGroup>
 
 </Project>

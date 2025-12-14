@@ -8,12 +8,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <FrameworkReference Include="Microsoft.AspNetCore.App" PrivateAssets="all" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <ProjectReference Include="..\Pl.Api.Http.Controllers\Pl.Api.Http.Controllers.csproj" />
-        <ProjectReference Include="..\Pl.Api.Http.Middlewares\Pl.Api.Http.Middlewares.csproj" />
+      <ProjectReference Include="..\..\..\..\..\Common\Common.ConvertParams\Common.ConvertParams.csproj" />
+      <ProjectReference Include="..\..\..\..\..\Common\Common.SearchParams\Common.SearchParams.csproj" />
+      <ProjectReference Include="..\..\Pl.Ui.Blazor.ViewModels\Pl.Ui.Blazor.ViewModels.csproj" />
     </ItemGroup>
 
 </Project>

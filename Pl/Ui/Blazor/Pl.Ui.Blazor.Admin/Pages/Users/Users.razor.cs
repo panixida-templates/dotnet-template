@@ -1,137 +1,139 @@
-﻿using MudBlazor;
+﻿using Common.ConvertParams;
+using Common.Enums;
+using Common.SearchParams;
+
+using Microsoft.AspNetCore.Components;
+
+using MudBlazor;
+
+using Pl.Ui.Blazor.Services.Interfaces;
+using Pl.Ui.Blazor.ViewModels;
 
 namespace Pl.Ui.Blazor.Admin.Pages.Users;
 
 public partial class Users
 {
-    private MudTable<UserRow>? _table;
+    [Inject] private IUsersService UsersService { get; set; } = default!;
+
+    private MudTable<UserViewModel>? _table;
 
     private string _search = string.Empty;
-    private string? _role;
-    private bool? _isActive;
+    private Role? _role;
 
     private bool _loading;
 
-    private readonly List<string> _roles = ["Admin", "Manager", "Operator", "Viewer"];
-    private readonly List<UserRow> _all = TestData.GenerateUsers(250);
+    private readonly List<Role> _roles = GetAllRoles();
+
+    private readonly UsersConvertParams _convertParams = new();
 
     private Task OnFiltersChanged()
-        => _table?.ReloadServerData() ?? Task.CompletedTask;
+    {
+        if (_table is null)
+        {
+            return Task.CompletedTask;
+        }
+
+        return _table.ReloadServerData();
+    }
 
     private async Task ResetFilters()
     {
         _search = string.Empty;
         _role = null;
-        _isActive = null;
 
         await OnFiltersChanged();
     }
 
-    private Task<TableData<UserRow>> LoadServerData(TableState state, CancellationToken ct)
+    private async Task<TableData<UserViewModel>> LoadServerData(TableState state, CancellationToken ct)
     {
         _loading = true;
 
-        IEnumerable<UserRow> query = _all;
+        try
+        {
+            var searchParams = CreateSearchParams(state);
+
+            var result = await UsersService.GetAsync(
+                searchParams: searchParams,
+                convertParams: _convertParams,
+                cancellationToken: ct);
+
+            return new TableData<UserViewModel>
+            {
+                TotalItems = result.Total,
+                Items = result.Objects
+            };
+        }
+        finally
+        {
+            _loading = false;
+        }
+    }
+
+    private UsersSearchParams CreateSearchParams(TableState state)
+    {
+        var searchParams = new UsersSearchParams();
+
+        // ВАЖНО:
+        // MudTable state.Page — 0-based.
+        // Если ваш API ожидает 1-based страницу, замените на: state.Page + 1
+        searchParams.Page = state.Page;
+        searchParams.ObjectsCount = state.PageSize;
 
         if (!string.IsNullOrWhiteSpace(_search))
         {
-            var s = _search.Trim();
-            query = query.Where(x =>
-                x.FullName.Contains(s, StringComparison.OrdinalIgnoreCase) ||
-                x.Email.Contains(s, StringComparison.OrdinalIgnoreCase));
+            searchParams.Search = _search.Trim();
         }
 
-        if (!string.IsNullOrWhiteSpace(_role))
-            query = query.Where(x => x.Role == _role);
-
-        if (_isActive.HasValue)
-            query = query.Where(x => x.IsActive == _isActive.Value);
-
-        query = ApplySorting(query, state);
-
-        var total = query.Count();
-
-        query = query
-            .Skip(state.Page * state.PageSize)
-            .Take(state.PageSize);
-
-        _loading = false;
-
-        return Task.FromResult(new TableData<UserRow>
+        if (_role.HasValue)
         {
-            TotalItems = total,
-            Items = query.ToList()
-        });
+            searchParams.Role = _role.Value;
+        }
+
+        ApplySorting(searchParams, state);
+
+        return searchParams;
     }
 
-    private static IEnumerable<UserRow> ApplySorting(IEnumerable<UserRow> query, TableState state)
+    private static void ApplySorting(UsersSearchParams searchParams, TableState state)
     {
-        if (state.SortDirection == SortDirection.None || string.IsNullOrWhiteSpace(state.SortLabel))
-            return query.OrderBy(x => x.FullName);
-
-        return (state.SortLabel, state.SortDirection) switch
+        if (state.SortDirection == MudBlazor.SortDirection.None || string.IsNullOrWhiteSpace(state.SortLabel))
         {
-            ("name", SortDirection.Ascending) => query.OrderBy(x => x.FullName),
-            ("name", SortDirection.Descending) => query.OrderByDescending(x => x.FullName),
+            return;
+        }
 
-            ("email", SortDirection.Ascending) => query.OrderBy(x => x.Email),
-            ("email", SortDirection.Descending) => query.OrderByDescending(x => x.Email),
+        // Подстройте под ваш контракт сортировки.
+        // Вариант А: если на бэке SortField = string, SortDesc = bool:
+        searchParams.SortField = MapSortField(state.SortLabel);
+        searchParams.SortDesc = state.SortDirection == MudBlazor.SortDirection.Descending;
 
-            ("role", SortDirection.Ascending) => query.OrderBy(x => x.Role),
-            ("role", SortDirection.Descending) => query.OrderByDescending(x => x.Role),
+        // Вариант Б: если у вас SortDirection enum/строка — замените присваивания под вашу модель.
+    }
 
-            ("created", SortDirection.Ascending) => query.OrderBy(x => x.CreatedAt),
-            ("created", SortDirection.Descending) => query.OrderByDescending(x => x.CreatedAt),
-
-            ("active", SortDirection.Ascending) => query.OrderBy(x => x.IsActive),
-            ("active", SortDirection.Descending) => query.OrderByDescending(x => x.IsActive),
-
-            _ => query.OrderBy(x => x.FullName)
+    private static string MapSortField(string sortLabel)
+    {
+        // Здесь важно, чтобы значения совпадали с тем, что понимает сервер.
+        // Если сервер ждёт "Name"/"Email" — возвращайте их.
+        return sortLabel switch
+        {
+            "name" => "name",
+            "email" => "email",
+            "role" => "role",
+            "phone" => "phone",
+            "age" => "age",
+            "birthday" => "birthday",
+            _ => "name"
         };
     }
 
-    private sealed record UserRow(
-        string FullName,
-        string Email,
-        string Role,
-        DateTime CreatedAt,
-        bool IsActive);
-
-    private static class TestData
+    private static List<Role> GetAllRoles()
     {
-        private static readonly string[] FirstNames =
-        [
-            "Алексей","Иван","Дмитрий","Сергей","Михаил","Андрей","Павел","Никита","Егор","Кирилл",
-            "Анна","Мария","Екатерина","Ольга","Наталья","Алина","Полина","Виктория","София","Ксения"
-        ];
+        var list = new List<Role>();
 
-        private static readonly string[] LastNames =
-        [
-            "Иванов","Петров","Сидоров","Смирнов","Кузнецов","Попов","Васильев","Новиков","Фёдоров","Морозов"
-        ];
-
-        public static List<UserRow> GenerateUsers(int count)
+        foreach (var value in Enum.GetValues<Role>())
         {
-            var rnd = new Random(42);
-            var roles = new[] { "Admin", "Manager", "Operator", "Viewer" };
-
-            var list = new List<UserRow>(count);
-
-            for (var i = 0; i < count; i++)
-            {
-                var first = FirstNames[rnd.Next(FirstNames.Length)];
-                var last = LastNames[rnd.Next(LastNames.Length)];
-
-                list.Add(new UserRow(
-                    FullName: $"{last} {first}",
-                    Email: $"{last.ToLowerInvariant()}.{first.ToLowerInvariant()}{i}@example.com",
-                    Role: roles[rnd.Next(roles.Length)],
-                    CreatedAt: DateTime.UtcNow.Date.AddDays(-rnd.Next(0, 365)),
-                    IsActive: rnd.NextDouble() > 0.2
-                ));
-            }
-
-            return list;
+            list.Add(value);
         }
+
+        return list;
     }
 }

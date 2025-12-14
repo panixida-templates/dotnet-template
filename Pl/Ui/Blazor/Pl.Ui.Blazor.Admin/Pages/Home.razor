@@ -1,59 +1,12 @@
 ﻿@page "/"
 
 <MudContainer MaxWidth="MaxWidth.Large" Class="mt-10">
-
     <MudPaper Elevation="3" Class="pa-8">
-
         <MudStack Spacing="4" AlignItems="AlignItems.Center">
-
             <MudIcon Icon="@Icons.Material.Filled.Dashboard" Size="Size.Large" Color="Color.Primary" />
-
             <MudText Typo="Typo.h4" Align="Align.Center">
                 Панель администрирования
             </MudText>
-
-            <MudText Typo="Typo.subtitle1" Color="Color.Secondary" Align="Align.Center">
-                Добро пожаловать в административный интерфейс системы.
-            </MudText>
-
-            <MudDivider Class="my-4" />
-
-            <MudGrid Justify="Justify.Center" Spacing="3">
-
-                <MudItem xs="12" sm="6" md="3">
-                    <MudPaper Elevation="1" Class="pa-4 text-center">
-                        <MudIcon Icon="@Icons.Material.Filled.People" Color="Color.Primary" />
-                        <MudText Typo="Typo.subtitle1">Пользователи</MudText>
-                        <MudText Typo="Typo.body2" Color="Color.Secondary">
-                            Управление учетными записями
-                        </MudText>
-                    </MudPaper>
-                </MudItem>
-
-                <MudItem xs="12" sm="6" md="3">
-                    <MudPaper Elevation="1" Class="pa-4 text-center">
-                        <MudIcon Icon="@Icons.Material.Filled.TableChart" Color="Color.Primary" />
-                        <MudText Typo="Typo.subtitle1">Данные</MudText>
-                        <MudText Typo="Typo.body2" Color="Color.Secondary">
-                            Просмотр и анализ таблиц
-                        </MudText>
-                    </MudPaper>
-                </MudItem>
-
-                <MudItem xs="12" sm="6" md="3">
-                    <MudPaper Elevation="1" Class="pa-4 text-center">
-                        <MudIcon Icon="@Icons.Material.Filled.Settings" Color="Color.Primary" />
-                        <MudText Typo="Typo.subtitle1">Настройки</MudText>
-                        <MudText Typo="Typo.body2" Color="Color.Secondary">
-                            Конфигурация системы
-                        </MudText>
-                    </MudPaper>
-                </MudItem>
-
-            </MudGrid>
-
         </MudStack>
-
     </MudPaper>
-
 </MudContainer>

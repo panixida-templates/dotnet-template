@@ -13,4 +13,9 @@
     <PackageReference Include="MudBlazor" Version="8.15.0" PrivateAssets="all" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Common\Clients\Common.Clients.DependencyInjection\Common.Clients.DependencyInjection.csproj" />
+    <ProjectReference Include="..\Services\Pl.Ui.Blazor.Services.DependencyInjection\Pl.Ui.Blazor.Services.DependencyInjection.csproj" />
+  </ItemGroup>
+
 </Project>

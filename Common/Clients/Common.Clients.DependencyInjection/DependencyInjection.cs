@@ -14,12 +14,12 @@ public static class DependencyInjection
 {
     public static IServiceCollection UseHttpClients(this IServiceCollection services, IConfiguration configuration)
     {
-        var apiBase = configuration[AppsettingsKeysConstants.ApiBaseAddress]
+        var apiBaseAddress = configuration[AppsettingsKeysConstants.ApiBaseAddress]
               ?? throw new InvalidOperationException($"Config key '{AppsettingsKeysConstants.ApiBaseAddress}' is missing.");
 
         services.AddHttpClient(ClientsConstants.ApiClient, client =>
         {
-            client.BaseAddress = new Uri(apiBase);
+            client.BaseAddress = new Uri(apiBaseAddress);
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(MediaTypeNames.Application.Json));
         });
 

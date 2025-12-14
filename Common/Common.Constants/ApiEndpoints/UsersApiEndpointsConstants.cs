@@ -7,7 +7,7 @@ public sealed class UsersApiEndpointsConstants : IBaseApiEndpointsConstants<User
     public const string BaseConstant = $"{IBaseApiRoutesConstants.BasePrefix}/{VersionConstant}/{ResourceNameConstant}";
 
     public const string ResourceNameConstant = "users";
-    public const string ByIdConstant = "{id:int}";
+    public const string IdConstant = "{id:int}";
 
     public const string VersionConstant = ApiVersionsConstants.V1;
 

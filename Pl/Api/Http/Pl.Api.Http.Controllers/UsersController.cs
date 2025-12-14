@@ -20,7 +20,7 @@ namespace Pl.Api.Http.Controllers;
 public sealed class UsersController(IUsersBl usersBl) : BaseApiController
 {
     [HttpGet]
-    [Route(UsersApiEndpointsConstants.ByIdConstant)]
+    [Route(UsersApiEndpointsConstants.IdConstant)]
     [ProducesResponseType(typeof(RestApiResponse<UserDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(RestApiResponse<UserDto>), StatusCodes.Status404NotFound)]
     public async Task<ActionResult<RestApiResponse<UserDto>>> Get([FromRoute] int id, [FromQuery] UsersConvertParams? convertParams)
@@ -47,7 +47,7 @@ public sealed class UsersController(IUsersBl usersBl) : BaseApiController
     }
 
     [HttpPut]
-    [Route(UsersApiEndpointsConstants.ByIdConstant)]
+    [Route(UsersApiEndpointsConstants.IdConstant)]
     [ProducesResponseType(typeof(RestApiResponse<NoContent>), StatusCodes.Status200OK)]
     public async Task<ActionResult<RestApiResponse<NoContent>>> Update([FromRoute] int id, [FromBody] UserDto dto)
     {
@@ -57,7 +57,7 @@ public sealed class UsersController(IUsersBl usersBl) : BaseApiController
     }
 
     [HttpDelete]
-    [Route(UsersApiEndpointsConstants.ByIdConstant)]
+    [Route(UsersApiEndpointsConstants.IdConstant)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<ActionResult> Delete([FromRoute] int id)
     {
