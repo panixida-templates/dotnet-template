@@ -8,6 +8,7 @@ using System.Net.Mime;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Common.Clients.Implementations;
 
@@ -19,7 +20,11 @@ public sealed class ApiHttpClient : IApiHttpClient
     {
         PropertyNameCaseInsensitive = true,
         Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
-        WriteIndented = false
+        WriteIndented = false,
+        Converters =
+        {
+            new JsonStringEnumConverter()
+        }
     };
 
     private static readonly HashSet<HttpMethod> MethodsWithBody =

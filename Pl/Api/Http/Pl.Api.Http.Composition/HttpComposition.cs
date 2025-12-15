@@ -12,6 +12,17 @@ public static class HttpComposition
 {
     public static void AddHttp(this IServiceCollection services)
     {
+        services.AddCors(options =>
+        {
+            options.AddPolicy("AllowAll", policy =>
+            {
+                policy
+                    .AllowAnyOrigin()
+                    .AllowAnyHeader()
+                    .AllowAnyMethod();
+            });
+        });
+
         services.AddControllers()
             .AddApplicationPart(typeof(BaseApiController).Assembly)
             .AddJsonOptions(jsonOptions =>
@@ -28,6 +39,8 @@ public static class HttpComposition
         app.RegisterMiddlewares();
 
         app.UseRouting();
+
+        app.UseCors("AllowAll");
 
         app.UseAuthentication();
         app.UseAuthorization();

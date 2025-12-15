@@ -7,6 +7,11 @@ public sealed record RestApiResponse<T>
 
     public bool IsSuccess => Failure == null;
 
+    public RestApiResponse()
+    {
+        Payload = default!;
+    }
+
     private RestApiResponse(Failure failure)
     {
         Failure = failure;

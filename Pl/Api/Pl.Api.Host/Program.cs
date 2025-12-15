@@ -44,6 +44,6 @@ if (!builder.Environment.IsEnvironment(EnvironmentConstants.Test))
 }
 
 app.UseSwaggerAndSwaggerUI();
-app.UseAuthenticationAndAuthorization();
+//app.UseAuthenticationAndAuthorization();
 
 await app.RunAsync();

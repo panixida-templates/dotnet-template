@@ -1,48 +1,26 @@
-﻿<MudStack Row="true" Spacing="2" AlignItems="AlignItems.Center" Class="mb-4">
+﻿<MudGrid Spacing="2" AlignItems="AlignItems.Center">
 
-    <MudTextField T="string"
-                  Value="@Search"
-                  ValueChanged="OnSearchChanged"
-                  Label="Поиск (ФИО / Email)"
-                  Variant="Variant.Outlined"
-                  Immediate="true"
-                  DebounceInterval="300"
-                  Adornment="Adornment.Start"
-                  AdornmentIcon="@Icons.Material.Filled.Search"
-                  OnDebounceIntervalElapsed="OnSearchDebounced" />
+    <MudItem xs="12" sm="6" md="4" lg="3">
+        <MudTextField T="string"
+                      Value="@SearchParams.SearchQuery"
+                      ValueChanged="OnSearchChanged"
+                      Label="Поиск (ФИО / Email)"
+                      Variant="Variant.Outlined"
+                      Immediate="true"
+                      DebounceInterval="300"
+                      Adornment="Adornment.Start"
+                      AdornmentIcon="@Icons.Material.Filled.Search"
+                      OnDebounceIntervalElapsed="OnSearchDebounced" />
+    </MudItem>
 
-    <MudSelect T="string"
-               Value="@Role"
-               ValueChanged="OnRoleChanged"
-               Label="Роль"
-               Variant="Variant.Outlined"
-               Clearable="true"
-               Dense="true"
-               Style="min-width:200px">
-        @foreach (var role in Roles)
-        {
-            <MudSelectItem Value="@role">@role</MudSelectItem>
-        }
-    </MudSelect>
+    <MudItem xs="12" sm="6" md="4" lg="3">
+        <EnumSelector TEnum="Role" Value="@SearchParams.Role" ValueChanged="OnRoleChanged" Label="Роль" />
+    </MudItem>
 
-    <MudSelect T="bool?"
-               Value="@IsActive"
-               ValueChanged="OnIsActiveChanged"
-               Label="Статус"
-               Variant="Variant.Outlined"
-               Clearable="true"
-               Dense="true"
-               Style="min-width:200px">
-        <MudSelectItem Value="@((bool?)true)">Активные</MudSelectItem>
-        <MudSelectItem Value="@((bool?)false)">Неактивные</MudSelectItem>
-    </MudSelect>
+</MudGrid>
 
-    <MudSpacer />
-
-    <MudButton Variant="Variant.Outlined"
-               StartIcon="@Icons.Material.Filled.Clear"
-               OnClick="OnResetClicked">
+<MudStack Row Justify="Justify.FlexEnd">
+    <MudButton Variant="Variant.Text" StartIcon="@Icons.Material.Filled.Clear" OnClick="OnResetClicked">
         Сбросить
     </MudButton>
-
 </MudStack>
