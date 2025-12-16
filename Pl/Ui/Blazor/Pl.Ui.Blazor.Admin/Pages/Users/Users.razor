@@ -1,16 +1,21 @@
 ﻿@page "/users"
+@inherits BaseFilterableTable<UserViewModel, UsersSearchParams>
 
 <MudStack Spacing="3">
 
-    <MudText Typo="Typo.h5">Пользователи</MudText>
+    <MudText Typo="Typo.h5" Align="Align.Center">Пользователи </MudText>
 
-    <MudPaper Elevation="1" Outlined="true">
-        <MudExpansionPanels Elevation="0">
-            <MudExpansionPanel Text="Фильтры" Expanded="@_filtersExpanded" ExpandedChanged="OnFiltersExpandedChanged">
-                <UsersFilters SearchParams="_searchParams" OnChanged="OnFiltersChanged" OnReset="ResetFilters" />
-            </MudExpansionPanel>
-        </MudExpansionPanels>
-    </MudPaper>
+    <ActionsPanel>
+        <MudItem>
+            <MudButton Variant="Variant.Outlined" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" Size="Size.Small">
+                Добавить
+            </MudButton>
+        </MudItem>
+    </ActionsPanel>
+
+    <FiltersPanel Title="Фильтры" Expanded="@_filtersExpanded" ExpandedChanged="OnFiltersExpandedChanged" OnReset="ResetFilters">
+        <UsersFilters SearchParams="_searchParams" OnChanged="OnFiltersChanged" />
+    </FiltersPanel>
 
     <MudPaper Elevation="1">
         <MudTable T="UserViewModel" @ref="_table" ServerData="LoadServerData" Hover="true" Bordered="true" Striped="true" Loading="_loading">

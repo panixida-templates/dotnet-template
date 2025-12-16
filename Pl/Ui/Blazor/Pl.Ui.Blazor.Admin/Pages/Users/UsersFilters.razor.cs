@@ -10,7 +10,6 @@ public partial class UsersFilters
     [Parameter] public UsersSearchParams SearchParams { get; set; } = default!;
 
     [Parameter] public EventCallback OnChanged { get; set; }
-    [Parameter] public EventCallback OnReset { get; set; }
 
     private Task OnSearchChanged(string value)
     {
@@ -27,10 +26,5 @@ public partial class UsersFilters
     {
         SearchParams.Role = value;
         await OnChanged.InvokeAsync();
-    }
-
-    private Task OnResetClicked()
-    {
-        return OnReset.InvokeAsync();
     }
 }
