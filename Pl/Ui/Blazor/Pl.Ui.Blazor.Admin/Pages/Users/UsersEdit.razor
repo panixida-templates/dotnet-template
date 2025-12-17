@@ -1,0 +1,130 @@
+﻿@page "/users/edit"
+@page "/users/edit/{Id:int}"
+
+@using Common.Enums
+<MudContainer MaxWidth="MaxWidth.False" Class="pa-6">
+
+    <MudStack Spacing="3">
+        <MudStack Row AlignItems="AlignItems.Center">
+            <MudText Typo="Typo.h4">@Title</MudText>
+            <MudSpacer />
+
+            @if (IsEditMode)
+            {
+                <MudChip T="string"
+                         Variant="Variant.Outlined"
+                         Size="Size.Small">
+                    ID: @_model.Id
+                </MudChip>
+            }
+        </MudStack>
+
+        @if (_loading)
+        {
+            <MudProgressLinear Indeterminate="true" />
+        }
+        else
+        {
+            @if (!string.IsNullOrWhiteSpace(_error))
+            {
+                <MudAlert Severity="Severity.Error" Variant="Variant.Outlined">
+                    @_error
+                </MudAlert>
+            }
+
+            <MudPaper Elevation="1" Class="pa-6">
+
+                <MudForm @ref="_form">
+
+                    <MudText Typo="Typo.subtitle1" Class="mb-2">Основные данные</MudText>
+
+                    <MudGrid Spacing="3">
+                        <MudItem xs="12" md="6" lg="4">
+                            <MudTextField T="string"
+                                          Label="@ModelType.DisplayNameFor(nameof(UserViewModel.Name))"
+                                          @bind-Value="_model.Name"
+                                          Required="true"
+                                          RequiredError="Введите имя."
+                                          Variant="Variant.Outlined" />
+                        </MudItem>
+
+                        <MudItem xs="12" md="6" lg="4">
+                            <MudSelect T="Role"
+                                       Label="@ModelType.DisplayNameFor(nameof(UserViewModel.Role))"
+                                       @bind-Value="_model.Role"
+                                       Required="true"
+                                       RequiredError="Выберите роль."
+                                       Variant="Variant.Outlined">
+                                @foreach (var role in _roles)
+                                {
+                                    <MudSelectItem Value="role">@role.GetDisplayName()</MudSelectItem>
+                                }
+                            </MudSelect>
+                        </MudItem>
+
+                        <MudItem xs="12" md="6" lg="4">
+                            <MudTextField T="string"
+                                          Label="@ModelType.DisplayNameFor(nameof(UserViewModel.Email))"
+                                          @bind-Value="_model.Email"
+                                          Required="true"
+                                          RequiredError="Введите Email."
+                                          Validation="ValidateEmail"
+                                          Variant="Variant.Outlined" />
+                        </MudItem>
+
+                        <MudItem xs="12" md="6" lg="4">
+                            <MudTextField T="string"
+                                          Label="@ModelType.DisplayNameFor(nameof(UserViewModel.Phone))"
+                                          @bind-Value="_model.Phone"
+                                          Required="true"
+                                          RequiredError="Введите телефон."
+                                          Variant="Variant.Outlined" />
+                        </MudItem>
+
+                        <MudItem xs="12" md="6" lg="4">
+                            <MudNumericField T="int"
+                                             Label="@ModelType.DisplayNameFor(nameof(UserViewModel.Age))"
+                                             @bind-Value="_model.Age"
+                                             Min="0"
+                                             Max="120"
+                                             Required="true"
+                                             RequiredError="Введите возраст."
+                                             Variant="Variant.Outlined" />
+                        </MudItem>
+
+                        <MudItem xs="12" md="6" lg="4">
+                            <MudDatePicker Label="@ModelType.DisplayNameFor(nameof(UserViewModel.Birthday))"
+                                           Date="@_model.Birthday"
+                                           DateChanged="OnBirthdayChanged"
+                                           MaxDate="@DateTime.Today"
+                                           Required="true"
+                                           RequiredError="Выберите дату рождения."
+                                           Variant="Variant.Outlined" />
+                        </MudItem>
+                    </MudGrid>
+
+                    <MudDivider Class="my-6" />
+
+                    <MudStack Row Justify="Justify.FlexEnd" Spacing="2">
+                        <MudButton Variant="Variant.Text"
+                                   OnClick="OnCancelClicked"
+                                   Disabled="_saving">
+                            Отмена
+                        </MudButton>
+
+                        <MudButton Variant="Variant.Filled"
+                                   Color="Color.Primary"
+                                   StartIcon="@Icons.Material.Filled.Save"
+                                   OnClick="OnSaveClicked"
+                                   Disabled="_saving">
+                            @(IsEditMode ? "Сохранить" : "Создать")
+                        </MudButton>
+                    </MudStack>
+
+                </MudForm>
+
+            </MudPaper>
+        }
+    </MudStack>
+
+</MudContainer>

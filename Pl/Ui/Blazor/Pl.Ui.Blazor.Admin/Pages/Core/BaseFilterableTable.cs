@@ -26,13 +26,13 @@ public abstract class BaseFilterableTable<TId, TViewModel, TSearchParams, TConve
     protected TSearchParams _searchParams = new();
     protected TConvertParams _convertParams = new();
 
-    protected Task OnFiltersExpandedChanged(bool expanded)
+    protected virtual Task OnFiltersExpandedChanged(bool expanded)
     {
         _filtersExpanded = expanded;
         return Task.CompletedTask;
     }
 
-    protected async Task OnFiltersChanged()
+    protected virtual async Task OnFiltersChanged()
     {
         if (_table is null)
         {
@@ -48,13 +48,13 @@ public abstract class BaseFilterableTable<TId, TViewModel, TSearchParams, TConve
         await _table.ReloadServerData();
     }
 
-    protected async Task ResetFilters()
+    protected virtual async Task ResetFilters()
     {
         _searchParams = new TSearchParams();
         await OnFiltersChanged();
     }
 
-    protected async Task<TableData<TViewModel>> LoadServerData(TableState state, CancellationToken cancellationToken)
+    protected virtual async Task<TableData<TViewModel>> LoadServerData(TableState state, CancellationToken cancellationToken)
     {
         _loading = true;
 

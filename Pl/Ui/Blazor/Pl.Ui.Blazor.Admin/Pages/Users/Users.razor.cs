@@ -9,4 +9,5 @@ namespace Pl.Ui.Blazor.Admin.Pages.Users;
 
 public partial class Users : BaseFilterableTable<int, UserViewModel, UsersSearchParams, UsersConvertParams, IUsersService>
 {
+    private const string Title = "Пользователи";
 }

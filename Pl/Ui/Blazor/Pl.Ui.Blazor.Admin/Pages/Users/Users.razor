@@ -3,7 +3,7 @@
 
 <MudStack Spacing="3">
 
-    <MudText Typo="Typo.h5" Align="Align.Center">Пользователи </MudText>
+    <MudText Typo="Typo.h5" Align="Align.Center">@Title</MudText>
 
     <ActionsPanel>
         <MudItem>
@@ -13,7 +13,7 @@
         </MudItem>
     </ActionsPanel>
 
-    <FiltersPanel Title="Фильтры" Expanded="@_filtersExpanded" ExpandedChanged="OnFiltersExpandedChanged" OnReset="ResetFilters">
+    <FiltersPanel Expanded="@_filtersExpanded" ExpandedChanged="OnFiltersExpandedChanged" OnReset="ResetFilters">
         <UsersFilters SearchParams="_searchParams" OnChanged="OnFiltersChanged" />
     </FiltersPanel>
 
@@ -22,47 +22,57 @@
             <HeaderContent>
                 <MudTh>
                     <MudTableSortLabel T="UserViewModel" SortLabel="@nameof(UserViewModel.Name)">
-                        Имя
+                        @typeof(UserViewModel).DisplayNameFor(nameof(UserViewModel.Name))
                     </MudTableSortLabel>
                 </MudTh>
                 <MudTh>
                     <MudTableSortLabel T="UserViewModel" SortLabel="@nameof(UserViewModel.Email)">
-                        Email
+                        @typeof(UserViewModel).DisplayNameFor(nameof(UserViewModel.Email))
                     </MudTableSortLabel>
                 </MudTh>
                 <MudTh>
                     <MudTableSortLabel T="UserViewModel" SortLabel="@nameof(UserViewModel.Role)">
-                        Роль
+                        @typeof(UserViewModel).DisplayNameFor(nameof(UserViewModel.Role))
                     </MudTableSortLabel>
                 </MudTh>
                 <MudTh>
                     <MudTableSortLabel T="UserViewModel" SortLabel="@nameof(UserViewModel.Phone)">
-                        Телефон
+                        @typeof(UserViewModel).DisplayNameFor(nameof(UserViewModel.Phone))
                     </MudTableSortLabel>
                 </MudTh>
                 <MudTh>
                     <MudTableSortLabel T="UserViewModel" SortLabel="@nameof(UserViewModel.Age)">
-                        Возраст
+                        @typeof(UserViewModel).DisplayNameFor(nameof(UserViewModel.Age))
                     </MudTableSortLabel>
                 </MudTh>
                 <MudTh>
                     <MudTableSortLabel T="UserViewModel" SortLabel="@nameof(UserViewModel.Birthday)">
-                        День рождения
+                        @typeof(UserViewModel).DisplayNameFor(nameof(UserViewModel.Birthday))
                     </MudTableSortLabel>
                 </MudTh>
             </HeaderContent>
 
             <RowTemplate>
-                <MudTd DataLabel="Имя">@context.Name</MudTd>
-                <MudTd DataLabel="Email">@context.Email</MudTd>
-                <MudTd DataLabel="Роль">
+                <MudTd DataLabel="@typeof(UserViewModel).DisplayNameFor(nameof(UserViewModel.Name))">
+                    @context.Name
+                </MudTd>
+                <MudTd DataLabel="@typeof(UserViewModel).DisplayNameFor(nameof(UserViewModel.Email))">
+                    @context.Email
+                </MudTd>
+                <MudTd DataLabel="@typeof(UserViewModel).DisplayNameFor(nameof(UserViewModel.Role))">
                     <MudChip T="string" Size="Size.Small" Variant="Variant.Outlined">
                         @context.Role.GetDisplayName()
                     </MudChip>
                 </MudTd>
-                <MudTd DataLabel="Телефон">@context.Phone</MudTd>
-                <MudTd DataLabel="Возраст">@context.Age</MudTd>
-                <MudTd DataLabel="День рождения">@context.Birthday.ToString()</MudTd>
+                <MudTd DataLabel="@typeof(UserViewModel).DisplayNameFor(nameof(UserViewModel.Phone))">
+                    @context.Phone
+                </MudTd>
+                <MudTd DataLabel="@typeof(UserViewModel).DisplayNameFor(nameof(UserViewModel.Age))">
+                    @context.Age
+                </MudTd>
+                <MudTd DataLabel="@typeof(UserViewModel).DisplayNameFor(nameof(UserViewModel.Birthday))">
+                    @context.Birthday.ToString("dd.MM.yyyy")
+                </MudTd>
             </RowTemplate>
 
             <PagerContent>
