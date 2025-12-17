@@ -1,5 +1,5 @@
 ﻿@page "/users"
-@inherits BaseFilterableTable<UserViewModel, UsersSearchParams>
+@inherits BaseFilterableTable<int, UserViewModel, UsersSearchParams, UsersConvertParams, IUsersService>
 
 <MudStack Spacing="3">
 
@@ -66,13 +66,11 @@
             </RowTemplate>
 
             <PagerContent>
-                <MudTablePager PageSizeOptions="new[] { 10, 20, 50 }" />
+                <MudTablePager PageSizeOptions="GetPageSizeOptions()" />
             </PagerContent>
 
             <NoRecordsContent>
-                <MudText Color="Color.Secondary">
-                    Ничего не найдено
-                </MudText>
+                <TableNoRecordsContent />
             </NoRecordsContent>
 
         </MudTable>
