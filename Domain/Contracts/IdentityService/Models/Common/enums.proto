@@ -1,8 +1,0 @@
-﻿syntax = "proto3";
-
-option csharp_namespace = "Gen.IdentityService.Enums";
-
-enum ApplicationUserRole {
-    DEVELOPER = 0;
-    ADMIN = 1;
-}

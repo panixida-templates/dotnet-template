@@ -36,7 +36,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Pl\Api\Api.csproj" />
+    <ProjectReference Include="..\..\Common\Clients\Common.Clients.DependencyInjection\Common.Clients.DependencyInjection.csproj" />
+    <ProjectReference Include="..\..\Common\Clients\Common.Clients.Interfaces\Common.Clients.Interfaces.csproj" />
+    <ProjectReference Include="..\..\Pl\Api\Http\Pl.Api.Http.Dtos\Pl.Api.Http.Dtos.csproj" />
+    <ProjectReference Include="..\..\Pl\Api\Pl.Api.Host\Pl.Api.Host.csproj" />
   </ItemGroup>
 
 </Project>

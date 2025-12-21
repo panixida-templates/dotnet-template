@@ -34,12 +34,4 @@
         </PackageReference>
     </ItemGroup>
 
-    <ItemGroup>
-        <Protobuf Include="IdentityService\Models\entities.proto" GrpcServices="Both" />
-        <Protobuf Include="IdentityService\Models\Common\enums.proto" GrpcServices="Both" />
-        <Protobuf Include="IdentityService\Models\Common\search_params.proto" GrpcServices="Both" />
-        <Protobuf Include="IdentityService\Models\Common\convert_params.proto" GrpcServices="Both" />
-        <Protobuf Include="IdentityService\application_user_service.proto" GrpcServices="Both" />
-    </ItemGroup>
-
 </Project>

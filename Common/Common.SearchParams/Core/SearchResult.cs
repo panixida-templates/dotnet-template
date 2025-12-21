@@ -16,16 +16,4 @@ public sealed class SearchResult<T>
         RequestedPage = requestedPage;
         RequestedObjectsCount = requestedObjectsCount;
     }
-
-    public SearchResult<TOut> Map<TOut>(Func<IEnumerable<T>, IEnumerable<TOut>> selector)
-    {
-        return selector is null
-            ? throw new ArgumentNullException(nameof(selector))
-            : new SearchResult<TOut>(
-            total: Total,
-            objects: selector(Objects),
-            requestedPage: RequestedPage,
-            requestedObjectsCount: RequestedObjectsCount
-        );
-    }
 }

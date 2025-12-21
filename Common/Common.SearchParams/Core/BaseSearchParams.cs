@@ -4,7 +4,12 @@ namespace Common.SearchParams.Core;
 
 public class BaseSearchParams
 {
-    public int Page { get; set; }
+    private int _page = 1;
+    public int Page
+    {
+        get { return _page; }
+        set { _page = value < 1 ? 1 : value; }
+    }
     public int? ObjectsCount { get; set; }
     public string? SortField { get; set; }
     public SortOrder SortOrder { get; set; }

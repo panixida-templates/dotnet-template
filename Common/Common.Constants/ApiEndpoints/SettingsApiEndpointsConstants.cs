@@ -7,6 +7,8 @@ public sealed class SettingsApiEndpointsConstants : IBaseApiEndpointsConstants<S
     public const string BaseConstant = $"{IBaseApiRoutesConstants.BasePrefix}/{VersionConstant}/{ResourceNameConstant}";
 
     public const string ResourceNameConstant = "settings";
+    public const string ByIdConstant = "{id:int}";
+
     public const string VersionConstant = ApiVersionsConstants.V1;
 
     public static string ResourceName => ResourceNameConstant;

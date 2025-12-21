@@ -6,7 +6,7 @@ using Dal.Interfaces.Core;
 
 namespace Dal.Interfaces;
 
-public interface ISettingsDal : IBaseDal<DbModels.Settings, Entities.Settings, int, SettingsSearchParams, SettingsConvertParams>
+public interface ISettingsDal : IBaseDal<DbModels.Settings, Entities.Setting, int, SettingsSearchParams, SettingsConvertParams>
 {
-    Task<Entities.Settings?> GetAsync(SettingType settingType);
+    Task<Entities.Setting?> GetAsync(SettingType settingType);
 }

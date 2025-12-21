@@ -1,20 +1,16 @@
-﻿using Api.Infrastructure.Models.Core;
-
+﻿using Common.Clients.Interfaces;
 using Common.Constants.ApiEndpoints.Core;
 using Common.SearchParams.Core;
 
 using DataGenerator;
 
-using Gen.IdentityService.Enums;
-
-using IntegrationTests.Clients.Interfaces;
 using IntegrationTests.Constants;
 using IntegrationTests.DataFactories;
 using IntegrationTests.Infrastructure;
 using IntegrationTests.WebApplicationFactories;
 
 using Microsoft.Extensions.DependencyInjection;
-
+using Pl.Api.Http.Dtos.Models.Core;
 using Xunit;
 
 using static IntegrationTests.Constants.TraitsConstants;
@@ -26,7 +22,7 @@ namespace IntegrationTests.Tests.Core;
 public abstract partial class IntegrationTestBase<TEndpoint, TId, TModel, TSearchParams, TConvertParams>
     where TEndpoint : IBaseApiEndpointsConstants<TEndpoint, TId>
     where TId : notnull
-    where TModel : BaseModel<TId>
+    where TModel : BaseDto<TId>
     where TSearchParams : BaseSearchParams
     where TConvertParams : class
 {
@@ -39,7 +35,7 @@ public abstract partial class IntegrationTestBase<TEndpoint, TId, TModel, TSearc
 
     protected IntegrationTestBase(ApiWebApplicationFactory apiWebApplicationFactory)
     {
-        DefaultHeaders = TestHeadersFactory.CreateAuthHeadersForUser(roles: [nameof(ApplicationUserRole.Admin)]);
+        DefaultHeaders = TestHeadersFactory.CreateAuthHeadersForUser();
         ApiHttpClient = apiWebApplicationFactory.Services.GetRequiredService<IApiHttpClient>();
 
         _postgresContainer = apiWebApplicationFactory.Services.GetRequiredService<PostgresContainer>();

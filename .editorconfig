@@ -53,6 +53,8 @@ csharp_prefer_static_local_function = true:suggestion
 csharp_space_around_binary_operators = before_and_after
 
 [*.{cs,vb}]
+dotnet_diagnostic.CA1873.severity = none
+
 #### Naming styles ####
 
 # Naming rules

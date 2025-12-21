@@ -8,8 +8,8 @@ using Entities;
 
 namespace Bl.Interfaces;
 
-public interface ISettingsBl : ICrudBl<Settings, int, SettingsSearchParams, SettingsConvertParams>
+public interface ISettingsBl : ICrudBl<Setting, int, SettingsSearchParams, SettingsConvertParams>
 {
-    Task<Settings?> GetAsync(SettingType settingType);
+    Task<Setting?> GetAsync(SettingType settingType);
 }
 

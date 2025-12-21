@@ -1,12 +1,10 @@
-﻿using Api.Infrastructure.Models.Core;
-
-using Common.Constants.ApiEndpoints.Core;
+﻿using Common.Constants.ApiEndpoints.Core;
 using Common.SearchParams.Core;
 
 using FluentAssertions;
 
 using IntegrationTests.WebApplicationFactories;
-
+using Pl.Api.Http.Dtos.Models.Core;
 using Xunit;
 
 namespace IntegrationTests.Tests.Core;
@@ -15,7 +13,7 @@ public abstract class CrudTestsBase<TEndpoint, TId, TModel, TSearchParams, TConv
     : IntegrationTestBase<TEndpoint, TId, TModel, TSearchParams, TConvertParams>(apiWebApplicationFactory)
     where TEndpoint : IBaseApiEndpointsConstants<TEndpoint, TId>
     where TId : notnull
-    where TModel : BaseModel<TId>
+    where TModel : BaseDto<TId>
     where TSearchParams : BaseSearchParams
     where TConvertParams : class
 {
