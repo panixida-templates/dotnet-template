@@ -12,7 +12,7 @@ FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["nuget.config", "."]
-COPY ["Pl/Api/Api.csproj", "Pl/Api/"]
+COPY ["Pl/Api/Pl.Api.Host/Pl.Api.Host.csproj", "Pl/Api/Pl.Api.Host/"]
 COPY ["Bl/Bl.DependencyInjection/Bl.DependencyInjection.csproj", "Bl/Bl.DependencyInjection/"]
 COPY ["Bl/Bl.Implementations/Bl.Implementations.csproj", "Bl/Bl.Implementations/"]
 COPY ["Common/Common.Helpers/Common.Helpers.csproj", "Common/Common.Helpers/"]
@@ -22,7 +22,6 @@ COPY ["Common/Common.ConvertParams/Common.ConvertParams.csproj", "Common/Common.
 COPY ["Common/Common.SearchParams/Common.SearchParams.csproj", "Common/Common.SearchParams/"]
 COPY ["Common/Common.Enums/Common.Enums.csproj", "Common/Common.Enums/"]
 COPY ["Domain/Entities/Entities.csproj", "Domain/Entities/"]
-COPY ["Domain/Contracts/Contracts.csproj", "Domain/Contracts/"]
 COPY ["Dal/Dal.DbModels/Dal.DbModels.csproj", "Dal/Dal.DbModels/"]
 COPY ["Common/Common.Attributes/Common.Attributes.csproj", "Common/Common.Attributes/"]
 COPY ["Bl/Bl.Interfaces/Bl.Interfaces.csproj", "Bl/Bl.Interfaces/"]
@@ -30,18 +29,23 @@ COPY ["Dal/Dal.DependencyInjection/Dal.DependencyInjection.csproj", "Dal/Dal.Dep
 COPY ["Dal/Dal.Implementations/Dal.Implementations.csproj", "Dal/Dal.Implementations/"]
 COPY ["Common/Common.Exceptions/Common.Exceptions.csproj", "Common/Common.Exceptions/"]
 COPY ["Dal/Dal.Ef/Dal.Ef.csproj", "Dal/Dal.Ef/"]
-RUN dotnet restore "./Pl/Api/Api.csproj"
+COPY ["Pl/Api/Http/Pl.Api.Http.Composition/Pl.Api.Http.Composition.csproj", "Pl/Api/Http/Pl.Api.Http.Composition/"]
+COPY ["Pl/Api/Http/Pl.Api.Http.Controllers/Pl.Api.Http.Controllers.csproj", "Pl/Api/Http/Pl.Api.Http.Controllers/"]
+COPY ["Pl/Api/Http/Pl.Api.Http.Dtos/Pl.Api.Http.Dtos.csproj", "Pl/Api/Http/Pl.Api.Http.Dtos/"]
+COPY ["Pl/Api/Http/Pl.Api.Http.Mappers/Pl.Api.Http.Mappers.csproj", "Pl/Api/Http/Pl.Api.Http.Mappers/"]
+COPY ["Pl/Api/Http/Pl.Api.Http.Middlewares/Pl.Api.Http.Middlewares.csproj", "Pl/Api/Http/Pl.Api.Http.Middlewares/"]
+RUN dotnet restore "./Pl/Api/Pl.Api.Host/Pl.Api.Host.csproj"
 COPY . .
-WORKDIR "/src/Pl/Api"
-RUN dotnet build "./Api.csproj" -c $BUILD_CONFIGURATION -o /app/build
+WORKDIR "/src/Pl/Api/Pl.Api.Host"
+RUN dotnet build "./Pl.Api.Host.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # This stage is used to publish the service project to be copied to the final stage
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./Api.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "./Pl.Api.Host.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 # This stage is used in production or when running from VS in regular mode (Default when not using the Debug configuration)
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "Api.dll"]
+ENTRYPOINT ["dotnet", "Pl.Api.Host.dll"]
