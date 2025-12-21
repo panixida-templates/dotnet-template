@@ -36,7 +36,7 @@ ARG BUILD_CONFIGURATION=Release
 RUN dotnet publish "./Pl.Ui.Blazor.Admin.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 FROM nginx:stable-alpine AS final
-RUN rm -rf /usr/share/nginx/html/*
+WORKDIR /app
+EXPOSE 8080
+COPY nginx.conf /etc/nginx/nginx.conf
 COPY --from=publish /app/publish/wwwroot/ /usr/share/nginx/html/
-COPY Pl/Ui/Blazor/Pl.Ui.Blazor.Admin/nginx.conf /etc/nginx/nginx.conf
-EXPOSE 80
