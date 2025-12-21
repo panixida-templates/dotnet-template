@@ -1,6 +1,4 @@
-﻿using System.Text.Json.Serialization;
-
-namespace Pl.Api.Http.Dtos.Core;
+﻿namespace Pl.Api.Http.Dtos.Core;
 
 public sealed record Failure
 {
