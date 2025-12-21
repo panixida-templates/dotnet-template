@@ -51,7 +51,7 @@ jobs:
 
   update-database:
       if: ${{ github.event_name != 'pull_request' }}
-      needs: [ build, resolve-env ]
+      needs: [ build-api, build-ui-admin, resolve-env ]
       runs-on: ubuntu-latest
       environment: ${{ needs.resolve-env.outputs.environment }}
       steps:
@@ -116,7 +116,7 @@ jobs:
 
   notify:
     if: ${{ always() && github.event_name != 'pull_request' }}
-    needs: [ deploy ]
+    needs: [ deploy-api, deploy-ui-admin ]
     uses: PANiXiDA-Infrastructure/ci-cd/.github/workflows/notify-telegram.yml@main
     with:
       event-name: ${{ github.event_name }}    
