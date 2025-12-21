@@ -33,7 +33,7 @@ RUN dotnet build "./Pl.Ui.Blazor.Admin.csproj" -c $BUILD_CONFIGURATION -o /app/b
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./Pl.Ui.Blazor.Admin.csproj" -c $BUILD_CONFIGURATION -o /app/publish --no-build
+RUN dotnet publish "./Pl.Ui.Blazor.Admin.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 FROM nginx:stable-alpine AS final
 RUN rm -rf /usr/share/nginx/html/*
