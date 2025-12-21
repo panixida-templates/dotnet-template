@@ -14,7 +14,6 @@ public static class UsersMapper
             Name = dto.Name,
             Email = dto.Email,
             Phone = dto.Phone,
-            Age = dto.Age,
             Birthday = dto.Birthday
         };
     }
@@ -29,12 +28,12 @@ public static class UsersMapper
         return new UserDto
         {
             Id = viewModel.Id,
-            Role = viewModel.Role,
+            Role = viewModel.Role ?? default,
             Name = viewModel.Name,
             Email = viewModel.Email,
             Phone = viewModel.Phone,
             Age = viewModel.Age,
-            Birthday = viewModel.Birthday
+            Birthday = viewModel.Birthday ?? default,
         };
     }
 

@@ -10,12 +10,21 @@ using Pl.Ui.Blazor.Services.Interfaces.Core;
 namespace Pl.Ui.Blazor.Admin.Pages.Core;
 
 public abstract class BaseFilterableTable<TId, TViewModel, TSearchParams, TConvertParams, TService> : ComponentBase
-    where TId : notnull
+    where TId : struct
+    where TViewModel : class, new()
     where TSearchParams : BaseSearchParams, new()
     where TConvertParams : class, new()
     where TService : IBaseService<TId, TViewModel, TSearchParams, TConvertParams>
 {
     [Inject] protected TService Service { get; set; } = default!;
+    [Inject] protected IDialogService DialogService { get; set; } = default!;
+    [Inject] protected ISnackbar Snackbar { get; set; } = default!;
+    [Inject] protected NavigationManager Navigation { get; set; } = default!;
+
+    protected abstract string EditRoute { get; }
+
+    protected const string AddButtonText = "Добавить";
+    protected const string Actions = "Действия";
 
     protected MudTable<TViewModel>? _table;
 
@@ -70,6 +79,52 @@ public abstract class BaseFilterableTable<TId, TViewModel, TSearchParams, TConve
                 TotalItems = result.Total,
                 Items = result.Objects
             };
+        }
+        finally
+        {
+            _loading = false;
+        }
+    }
+
+    protected void OnAddClicked()
+    {
+        Navigation.NavigateTo(EditRoute);
+    }
+
+    protected void OnEditClicked(int id)
+    {
+        Navigation.NavigateTo($"{EditRoute}/{id}");
+    }
+
+    protected async Task OnDeleteClicked(TId id)
+    {
+        var confirmed = await DialogService.ShowMessageBox(
+            title: "Удаление",
+            message: "Вы уверены, что хотите выполнить это действие?",
+            yesText: "Удалить",
+            cancelText: "Отмена");
+
+        if (confirmed != true)
+        {
+            return;
+        }
+
+        try
+        {
+            _loading = true;
+
+            await Service.DeleteAsync(id);
+
+            Snackbar.Add("Успешно.", Severity.Success);
+
+            if (_table is not null)
+            {
+                await _table.ReloadServerData();
+            }
+        }
+        catch (Exception)
+        {
+            Snackbar.Add($"Ошибка.", Severity.Error);
         }
         finally
         {

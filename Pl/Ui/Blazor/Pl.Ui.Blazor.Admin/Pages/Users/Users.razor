@@ -1,89 +1,103 @@
 ﻿@page "/users"
 @inherits BaseFilterableTable<int, UserViewModel, UsersSearchParams, UsersConvertParams, IUsersService>
 
-<MudStack Spacing="3">
+<PageTitle>@Title</PageTitle>
 
-    <MudText Typo="Typo.h5" Align="Align.Center">@Title</MudText>
+<MudContainer MaxWidth="MaxWidth.False" Class="pa-6">
 
-    <ActionsPanel>
-        <MudItem>
-            <MudButton Variant="Variant.Outlined" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" Size="Size.Small">
-                Добавить
-            </MudButton>
-        </MudItem>
-    </ActionsPanel>
+    <MudStack Spacing="3">
 
-    <FiltersPanel Expanded="@_filtersExpanded" ExpandedChanged="OnFiltersExpandedChanged" OnReset="ResetFilters">
-        <UsersFilters SearchParams="_searchParams" OnChanged="OnFiltersChanged" />
-    </FiltersPanel>
+        <MudText Typo="Typo.h5" Align="Align.Center">@Title</MudText>
 
-    <MudPaper Elevation="1">
-        <MudTable T="UserViewModel" @ref="_table" ServerData="LoadServerData" Hover="true" Bordered="true" Striped="true" Loading="_loading">
-            <HeaderContent>
-                <MudTh>
-                    <MudTableSortLabel T="UserViewModel" SortLabel="@nameof(UserViewModel.Name)">
-                        @typeof(UserViewModel).DisplayNameFor(nameof(UserViewModel.Name))
-                    </MudTableSortLabel>
-                </MudTh>
-                <MudTh>
-                    <MudTableSortLabel T="UserViewModel" SortLabel="@nameof(UserViewModel.Email)">
-                        @typeof(UserViewModel).DisplayNameFor(nameof(UserViewModel.Email))
-                    </MudTableSortLabel>
-                </MudTh>
-                <MudTh>
-                    <MudTableSortLabel T="UserViewModel" SortLabel="@nameof(UserViewModel.Role)">
-                        @typeof(UserViewModel).DisplayNameFor(nameof(UserViewModel.Role))
-                    </MudTableSortLabel>
-                </MudTh>
-                <MudTh>
-                    <MudTableSortLabel T="UserViewModel" SortLabel="@nameof(UserViewModel.Phone)">
-                        @typeof(UserViewModel).DisplayNameFor(nameof(UserViewModel.Phone))
-                    </MudTableSortLabel>
-                </MudTh>
-                <MudTh>
-                    <MudTableSortLabel T="UserViewModel" SortLabel="@nameof(UserViewModel.Age)">
-                        @typeof(UserViewModel).DisplayNameFor(nameof(UserViewModel.Age))
-                    </MudTableSortLabel>
-                </MudTh>
-                <MudTh>
-                    <MudTableSortLabel T="UserViewModel" SortLabel="@nameof(UserViewModel.Birthday)">
-                        @typeof(UserViewModel).DisplayNameFor(nameof(UserViewModel.Birthday))
-                    </MudTableSortLabel>
-                </MudTh>
-            </HeaderContent>
+        <ActionsPanel>
+            <MudItem>
+                <MudButton Variant="Variant.Outlined" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" Size="Size.Small" OnClick="@OnAddClicked">
+                    @AddButtonText
+                </MudButton>
+            </MudItem>
+        </ActionsPanel>
 
-            <RowTemplate>
-                <MudTd DataLabel="@typeof(UserViewModel).DisplayNameFor(nameof(UserViewModel.Name))">
-                    @context.Name
-                </MudTd>
-                <MudTd DataLabel="@typeof(UserViewModel).DisplayNameFor(nameof(UserViewModel.Email))">
-                    @context.Email
-                </MudTd>
-                <MudTd DataLabel="@typeof(UserViewModel).DisplayNameFor(nameof(UserViewModel.Role))">
-                    <MudChip T="string" Size="Size.Small" Variant="Variant.Outlined">
-                        @context.Role.GetDisplayName()
-                    </MudChip>
-                </MudTd>
-                <MudTd DataLabel="@typeof(UserViewModel).DisplayNameFor(nameof(UserViewModel.Phone))">
-                    @context.Phone
-                </MudTd>
-                <MudTd DataLabel="@typeof(UserViewModel).DisplayNameFor(nameof(UserViewModel.Age))">
-                    @context.Age
-                </MudTd>
-                <MudTd DataLabel="@typeof(UserViewModel).DisplayNameFor(nameof(UserViewModel.Birthday))">
-                    @context.Birthday.ToString("dd.MM.yyyy")
-                </MudTd>
-            </RowTemplate>
+        <FiltersPanel Expanded="@_filtersExpanded" ExpandedChanged="OnFiltersExpandedChanged" OnReset="ResetFilters">
+            <UsersFilters SearchParams="_searchParams" OnChanged="OnFiltersChanged" />
+        </FiltersPanel>
 
-            <PagerContent>
-                <MudTablePager PageSizeOptions="GetPageSizeOptions()" />
-            </PagerContent>
+        <MudPaper Elevation="1">
+            <MudTable T="UserViewModel" @ref="_table" ServerData="LoadServerData" Hover="true" Bordered="true" Striped="true" Loading="_loading">
+                <HeaderContent>
+                    <MudTh>
+                        <MudTableSortLabel T="UserViewModel" SortLabel="@nameof(UserViewModel.Name)">
+                            @typeof(UserViewModel).DisplayNameFor(nameof(UserViewModel.Name))
+                        </MudTableSortLabel>
+                    </MudTh>
+                    <MudTh>
+                        <MudTableSortLabel T="UserViewModel" SortLabel="@nameof(UserViewModel.Email)">
+                            @typeof(UserViewModel).DisplayNameFor(nameof(UserViewModel.Email))
+                        </MudTableSortLabel>
+                    </MudTh>
+                    <MudTh>
+                        <MudTableSortLabel T="UserViewModel" SortLabel="@nameof(UserViewModel.Role)">
+                            @typeof(UserViewModel).DisplayNameFor(nameof(UserViewModel.Role))
+                        </MudTableSortLabel>
+                    </MudTh>
+                    <MudTh>
+                        <MudTableSortLabel T="UserViewModel" SortLabel="@nameof(UserViewModel.Phone)">
+                            @typeof(UserViewModel).DisplayNameFor(nameof(UserViewModel.Phone))
+                        </MudTableSortLabel>
+                    </MudTh>
+                    <MudTh>
+                        <MudTableSortLabel T="UserViewModel" SortLabel="@nameof(UserViewModel.Age)">
+                            @typeof(UserViewModel).DisplayNameFor(nameof(UserViewModel.Age))
+                        </MudTableSortLabel>
+                    </MudTh>
+                    <MudTh>
+                        <MudTableSortLabel T="UserViewModel" SortLabel="@nameof(UserViewModel.Birthday)">
+                            @typeof(UserViewModel).DisplayNameFor(nameof(UserViewModel.Birthday))
+                        </MudTableSortLabel>
+                    </MudTh>
+                    <MudTh>
+                        @Actions
+                    </MudTh>
+                </HeaderContent>
 
-            <NoRecordsContent>
-                <TableNoRecordsContent />
-            </NoRecordsContent>
+                <RowTemplate>
+                    <MudTd DataLabel="@typeof(UserViewModel).DisplayNameFor(nameof(UserViewModel.Name))">
+                        @context.Name
+                    </MudTd>
+                    <MudTd DataLabel="@typeof(UserViewModel).DisplayNameFor(nameof(UserViewModel.Email))">
+                        @context.Email
+                    </MudTd>
+                    <MudTd DataLabel="@typeof(UserViewModel).DisplayNameFor(nameof(UserViewModel.Role))">
+                        <MudChip T="string" Size="Size.Small" Variant="Variant.Outlined">
+                            @context.Role?.GetDisplayName()
+                        </MudChip>
+                    </MudTd>
+                    <MudTd DataLabel="@typeof(UserViewModel).DisplayNameFor(nameof(UserViewModel.Phone))">
+                        @PhoneHelper.ToDisplayRuPhone(context.Phone)
+                    </MudTd>
+                    <MudTd DataLabel="@typeof(UserViewModel).DisplayNameFor(nameof(UserViewModel.Age))">
+                        @context.Age
+                    </MudTd>
+                    <MudTd DataLabel="@typeof(UserViewModel).DisplayNameFor(nameof(UserViewModel.Birthday))">
+                        @context.Birthday.ToString()
+                    </MudTd>
+                    <MudTd DataLabel="@Actions">
+                        <MudIconButton Icon="@Icons.Material.Filled.Edit" Size="Size.Small" Color="Color.Primary" OnClick="@(() => OnEditClicked(context.Id))" />
+                        <MudIconButton Icon="@Icons.Material.Filled.Delete" Size="Size.Small" Color="Color.Error" OnClick="@(() => OnDeleteClicked(context.Id))" />
+                    </MudTd>
+                </RowTemplate>
 
-        </MudTable>
-    </MudPaper>
+                <PagerContent>
+                    <MudTablePager PageSizeOptions="GetPageSizeOptions()" />
+                </PagerContent>
 
-</MudStack>
+                <NoRecordsContent>
+                    <TableNoRecordsContent />
+                </NoRecordsContent>
+
+            </MudTable>
+
+        </MudPaper>
+
+    </MudStack>
+
+</MudContainer>

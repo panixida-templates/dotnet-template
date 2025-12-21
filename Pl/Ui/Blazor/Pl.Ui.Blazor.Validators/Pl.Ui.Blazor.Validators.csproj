@@ -8,8 +8,13 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="FluentValidation" Version="12.1.1" />
+      <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.1" />
+      <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.1" />
+    </ItemGroup>
+
+    <ItemGroup>
       <ProjectReference Include="..\..\..\..\Common\Common.Enums\Common.Enums.csproj" />
-      <ProjectReference Include="..\..\..\Api\Http\Pl.Api.Http.Dtos\Pl.Api.Http.Dtos.csproj" />
       <ProjectReference Include="..\Pl.Ui.Blazor.ViewModels\Pl.Ui.Blazor.ViewModels.csproj" />
     </ItemGroup>
 

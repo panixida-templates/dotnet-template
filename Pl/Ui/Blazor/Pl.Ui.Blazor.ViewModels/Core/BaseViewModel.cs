@@ -2,5 +2,5 @@
 
 public abstract record BaseViewModel<TId>
 {
-    public required TId Id { get; set; }
+    public TId Id { get; set; }
 }

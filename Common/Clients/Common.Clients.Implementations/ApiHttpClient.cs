@@ -1,6 +1,7 @@
 ﻿using Common.Clients.Interfaces;
 using Common.Constants;
 using Common.Helpers;
+using Common.JsonConverters;
 using Common.SearchParams.Core;
 
 using System.Net;
@@ -23,7 +24,9 @@ public sealed class ApiHttpClient : IApiHttpClient
         WriteIndented = false,
         Converters =
         {
-            new JsonStringEnumConverter()
+            new JsonStringEnumConverter(),
+            new UtcDateTimeConverter(),
+            new NullableUtcDateTimeConverter(),
         }
     };
 

@@ -1,23 +1,15 @@
 ﻿@page "/users/edit"
 @page "/users/edit/{Id:int}"
+@inherits BaseEdit<int, UserViewModel, UsersSearchParams, UsersConvertParams, IUsersService>
 
-@using Common.Enums
+<PageTitle>@Title</PageTitle>
+
 <MudContainer MaxWidth="MaxWidth.False" Class="pa-6">
 
     <MudStack Spacing="3">
-        <MudStack Row AlignItems="AlignItems.Center">
-            <MudText Typo="Typo.h4">@Title</MudText>
-            <MudSpacer />
-
-            @if (IsEditMode)
-            {
-                <MudChip T="string"
-                         Variant="Variant.Outlined"
-                         Size="Size.Small">
-                    ID: @_model.Id
-                </MudChip>
-            }
-        </MudStack>
+        <MudText Typo="Typo.h4" Align="Align.Center">
+            @Title
+        </MudText>
 
         @if (_loading)
         {
@@ -33,95 +25,73 @@
             }
 
             <MudPaper Elevation="1" Class="pa-6">
+                <EditForm Model="_model" OnValidSubmit="OnValidSubmit">
 
-                <MudForm @ref="_form">
-
-                    <MudText Typo="Typo.subtitle1" Class="mb-2">Основные данные</MudText>
+                    <FluentValidationValidator DisableAssemblyScanning="true" />
 
                     <MudGrid Spacing="3">
+
                         <MudItem xs="12" md="6" lg="4">
                             <MudTextField T="string"
                                           Label="@ModelType.DisplayNameFor(nameof(UserViewModel.Name))"
                                           @bind-Value="_model.Name"
-                                          Required="true"
-                                          RequiredError="Введите имя."
+                                          For="(() => _model.Name)"
                                           Variant="Variant.Outlined" />
                         </MudItem>
 
                         <MudItem xs="12" md="6" lg="4">
-                            <MudSelect T="Role"
-                                       Label="@ModelType.DisplayNameFor(nameof(UserViewModel.Role))"
-                                       @bind-Value="_model.Role"
-                                       Required="true"
-                                       RequiredError="Выберите роль."
-                                       Variant="Variant.Outlined">
-                                @foreach (var role in _roles)
-                                {
-                                    <MudSelectItem Value="role">@role.GetDisplayName()</MudSelectItem>
-                                }
-                            </MudSelect>
+                            <EnumSelector TEnum="Role"
+                                          @bind-Value="_model.Role"
+                                          For="(() => _model.Role)"
+                                          Label="@ModelType.DisplayNameFor(nameof(UserViewModel.Role))"
+                                          Clearable="false" />
                         </MudItem>
 
                         <MudItem xs="12" md="6" lg="4">
                             <MudTextField T="string"
                                           Label="@ModelType.DisplayNameFor(nameof(UserViewModel.Email))"
                                           @bind-Value="_model.Email"
-                                          Required="true"
-                                          RequiredError="Введите Email."
-                                          Validation="ValidateEmail"
-                                          Variant="Variant.Outlined" />
+                                          For="(() => _model.Email)"
+                                          Variant="Variant.Outlined"
+                                          InputType="InputType.Email"
+                                          Placeholder="user@example.com" />
                         </MudItem>
 
                         <MudItem xs="12" md="6" lg="4">
                             <MudTextField T="string"
                                           Label="@ModelType.DisplayNameFor(nameof(UserViewModel.Phone))"
                                           @bind-Value="_model.Phone"
-                                          Required="true"
-                                          RequiredError="Введите телефон."
-                                          Variant="Variant.Outlined" />
+                                          For="(() => _model.Phone)"
+                                          Variant="Variant.Outlined"
+                                          Mask="@PhoneMask"
+                                          Adornment="Adornment.Start"
+                                          AdornmentText="+7"
+                                          Placeholder="(___) ___-__-__" />
+
                         </MudItem>
 
                         <MudItem xs="12" md="6" lg="4">
                             <MudNumericField T="int"
                                              Label="@ModelType.DisplayNameFor(nameof(UserViewModel.Age))"
-                                             @bind-Value="_model.Age"
-                                             Min="0"
-                                             Max="120"
-                                             Required="true"
-                                             RequiredError="Введите возраст."
+                                             Value="_model.Age"
+                                             ReadOnly="true"
                                              Variant="Variant.Outlined" />
                         </MudItem>
 
                         <MudItem xs="12" md="6" lg="4">
                             <MudDatePicker Label="@ModelType.DisplayNameFor(nameof(UserViewModel.Birthday))"
-                                           Date="@_model.Birthday"
-                                           DateChanged="OnBirthdayChanged"
+                                           @bind-Date="_model.Birthday"
+                                           For="(() => _model.Birthday)"
                                            MaxDate="@DateTime.Today"
-                                           Required="true"
-                                           RequiredError="Выберите дату рождения."
+                                           Clearable="false"
                                            Variant="Variant.Outlined" />
                         </MudItem>
+
                     </MudGrid>
 
-                    <MudDivider Class="my-6" />
+                    <EditFormActions IsEditMode="IsEditMode" Disabled="_saving" OnCancel="OnCancelClicked" />
 
-                    <MudStack Row Justify="Justify.FlexEnd" Spacing="2">
-                        <MudButton Variant="Variant.Text"
-                                   OnClick="OnCancelClicked"
-                                   Disabled="_saving">
-                            Отмена
-                        </MudButton>
-
-                        <MudButton Variant="Variant.Filled"
-                                   Color="Color.Primary"
-                                   StartIcon="@Icons.Material.Filled.Save"
-                                   OnClick="OnSaveClicked"
-                                   Disabled="_saving">
-                            @(IsEditMode ? "Сохранить" : "Создать")
-                        </MudButton>
-                    </MudStack>
-
-                </MudForm>
+                </EditForm>
 
             </MudPaper>
         }

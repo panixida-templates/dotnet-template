@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Blazored.FluentValidation" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.1" PrivateAssets="all" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.1" PrivateAssets="all" />
     <PackageReference Include="MudBlazor" Version="8.15.0" PrivateAssets="all" />
@@ -16,6 +17,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\Common\Clients\Common.Clients.DependencyInjection\Common.Clients.DependencyInjection.csproj" />
     <ProjectReference Include="..\..\..\..\Common\Common.Helpers\Common.Helpers.csproj" />
+    <ProjectReference Include="..\Pl.Ui.Blazor.Validators\Pl.Ui.Blazor.Validators.csproj" />
     <ProjectReference Include="..\Services\Pl.Ui.Blazor.Services.DependencyInjection\Pl.Ui.Blazor.Services.DependencyInjection.csproj" />
   </ItemGroup>
 

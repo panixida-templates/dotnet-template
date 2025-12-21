@@ -17,6 +17,7 @@
     <ItemGroup>
         <ProjectReference Include="..\..\Common.Constants\Common.Constants.csproj" />
         <ProjectReference Include="..\..\Common.Helpers\Common.Helpers.csproj" />
+        <ProjectReference Include="..\..\Common.JsonConverters\Common.JsonConverters.csproj" />
         <ProjectReference Include="..\..\Common.SearchParams\Common.SearchParams.csproj" />
         <ProjectReference Include="..\Common.Clients.Interfaces\Common.Clients.Interfaces.csproj" />
     </ItemGroup>
