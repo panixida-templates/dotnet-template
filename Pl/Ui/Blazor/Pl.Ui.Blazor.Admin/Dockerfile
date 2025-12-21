@@ -38,5 +38,5 @@ RUN dotnet publish "./Pl.Ui.Blazor.Admin.csproj" -c $BUILD_CONFIGURATION -o /app
 FROM nginx:stable-alpine AS final
 WORKDIR /app
 EXPOSE 8080
-COPY nginx.conf /etc/nginx/nginx.conf
+COPY Pl/Ui/Blazor/Pl.Ui.Blazor.Admin/nginx.conf /etc/nginx/nginx.conf
 COPY --from=publish /app/publish/wwwroot/ /usr/share/nginx/html/
