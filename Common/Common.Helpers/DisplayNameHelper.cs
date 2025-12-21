@@ -7,7 +7,7 @@ public static class DisplayNameHelper
 {
     public static string DisplayNameFor(this Type type, string propertyName)
     {
-        var property = type.GetProperty(propertyName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.IgnoreCase) 
+        var property = type.GetProperty(propertyName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.IgnoreCase)
             ?? throw new ArgumentException($"Property '{propertyName}' not found on type '{type.Name}'");
 
         var display = property.GetCustomAttribute<DisplayAttribute>();

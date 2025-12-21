@@ -1,5 +1,5 @@
 ﻿using Common.Constants;
-
+using Common.Exceptions;
 using Grpc.Core;
 
 using Microsoft.AspNetCore.Http;
@@ -28,6 +28,13 @@ public sealed class ExceptionsMiddleware(RequestDelegate next, ILogger<Exception
                 var response = RestApiResponseBuilder<object>.Fail(ex.Status.Detail, "gRPC ошибка при взаимодействии с внутренним сервисом.");
                 await context.Response.WriteAsJsonAsync(response);
             }
+        }
+        catch (NotFoundException ex)
+        {
+            logger.LogWarning(ex, "Ресурс не найден");
+            context.Response.StatusCode = StatusCodes.Status404NotFound;
+            var errorResponse = RestApiResponseBuilder<object>.Fail(ex.Message, property: ErrorMessagesConstants.NotFound);
+            await context.Response.WriteAsJsonAsync(errorResponse);
         }
         catch (Exception ex)
         {

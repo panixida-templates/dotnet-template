@@ -7,7 +7,7 @@ public sealed class NullableUtcDateTimeConverter : JsonConverter<DateTime?>
 {
     private static readonly UtcDateTimeConverter Inner = new();
 
-    public override DateTime? Read(ref Utf8JsonReader reader, Type typeToConvert,JsonSerializerOptions options)
+    public override DateTime? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         if (reader.TokenType == JsonTokenType.Null)
         {

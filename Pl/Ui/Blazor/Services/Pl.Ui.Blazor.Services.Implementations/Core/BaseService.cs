@@ -7,7 +7,7 @@ using Pl.Ui.Blazor.Services.Interfaces.Core;
 
 namespace Pl.Ui.Blazor.Services.Implementations.Core;
 
-public abstract class BaseService<TEndpoint, TId, TDto, TViewModel, TSearchParams, TConvertParams>(IApiHttpClient apiHttpClient, Func<TDto, TViewModel> toViewModel, Func<TViewModel, TDto> toDto) 
+public abstract class BaseService<TEndpoint, TId, TDto, TViewModel, TSearchParams, TConvertParams>(IApiHttpClient apiHttpClient, Func<TDto, TViewModel> toViewModel, Func<TViewModel, TDto> toDto)
     : IBaseService<TId, TViewModel, TSearchParams, TConvertParams>
     where TEndpoint : IBaseApiEndpointsConstants<TEndpoint, TId>
     where TId : notnull

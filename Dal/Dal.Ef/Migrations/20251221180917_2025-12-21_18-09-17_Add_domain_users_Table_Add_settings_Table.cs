@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Dal.Ef.Migrations
 {
     /// <inheritdoc />
-    public partial class _20251215_155858_Rename_Column_application_user_id_In_domain_users_Table_To_role_Add_Column_age_To_domain_users_Table_Add__00E40B44 : Migration
+    public partial class _20251221_180917_Add_domain_users_Table_Add_settings_Table : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

@@ -1,8 +1,12 @@
-﻿namespace Pl.Api.Http.Dtos.Core;
+﻿using System.Text.Json.Serialization;
+
+namespace Pl.Api.Http.Dtos.Core;
 
 public sealed record Failure
 {
     public Dictionary<string, string> Errors { get; } = [];
+
+    public Failure() { }
 
     private Failure(string? error, string property = "")
     {

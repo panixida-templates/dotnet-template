@@ -6,6 +6,6 @@ using Pl.Ui.Blazor.ViewModels;
 
 namespace Pl.Ui.Blazor.Services.Interfaces;
 
-public interface IUsersService: IBaseService<int, UserViewModel, UsersSearchParams, UsersConvertParams>
+public interface IUsersService : IBaseService<int, UserViewModel, UsersSearchParams, UsersConvertParams>
 {
 }

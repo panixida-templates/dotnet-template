@@ -17,6 +17,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\..\..\..\Common\Common.Constants\Common.Constants.csproj" />
+        <ProjectReference Include="..\..\..\..\Common\Common.Exceptions\Common.Exceptions.csproj" />
         <ProjectReference Include="..\Pl.Api.Http.Dtos\Pl.Api.Http.Dtos.csproj" />
     </ItemGroup>
 

@@ -11,7 +11,7 @@ using Pl.Ui.Blazor.ViewModels;
 
 namespace Pl.Ui.Blazor.Services.Implementations;
 
-public sealed class UsersService(IApiHttpClient apiHttpClient): 
+public sealed class UsersService(IApiHttpClient apiHttpClient) :
     BaseService<UsersApiEndpointsConstants, int, UserDto, UserViewModel, UsersSearchParams, UsersConvertParams>(apiHttpClient, toViewModel: UsersMapper.ToViewModel, toDto: UsersMapper.ToDto),
     IUsersService
 {
